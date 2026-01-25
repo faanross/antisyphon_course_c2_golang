@@ -12,15 +12,14 @@ import (
 func main() {
 	// Create server config directly in code
 	cfg := &config.ServerConfig{
-		Protocol:           "https",
-		ListeningInterface: "0.0.0.0",
-		ListeningPort:      "8443",
-		TlsCert:            "./certs/server.crt",
-		TlsKey:             "./certs/server.key",
+		// TODO: Assign protocol https
+		// TODO: Assign ListeningInterface as 0.0.0.0
+		// TODO: Assign ListeningPort as 8443
+		TlsCert: "./certs/server.crt",
+		TlsKey:  "./certs/server.key",
 	}
 
-	// Create server using interface's factory function
-	srv, err := server.NewServer(cfg)
+	// TODO: Create server using interface's factory function
 	if err != nil {
 		log.Fatalf("Failed to create server: %v", err)
 	}
@@ -34,9 +33,9 @@ func main() {
 	}()
 
 	// Wait for interrupt signal
-	sigChan := make(chan os.Signal, 1)
+	// TODO: Assign sigChan using make, channel type is os.Signal, buffer of 1)
 	signal.Notify(sigChan, os.Interrupt)
-	<-sigChan
+	// TODO: Block main goroutine here with sigChan
 
 	// Graceful shutdown
 	log.Println("Shutting down server...")

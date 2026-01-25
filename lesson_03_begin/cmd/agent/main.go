@@ -18,7 +18,7 @@ func main() {
 		ServerPort: "8443",
 	}
 
-	a, err := agent.NewAgent(cfg)
+	// TODO: call NewAgent() constructor
 	if err != nil {
 		log.Fatalf("Failed to create agent: %v", err)
 	}
@@ -27,13 +27,13 @@ func main() {
 	// Send a test message
 
 	log.Printf("Sending request to %s server...", cfg.Protocol)
-	response, err := a.Send(context.Background())
+	// TODO: call Send() method on a, pass context.Background() as argument
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)
 	}
 
 	// Parse and display response
-	var httpsResp server.HTTPSResponse
+	// TODO: instantiate httpsResp of type server.HTTPSResponse to unmarshall into
 	if err := json.Unmarshal(response, &httpsResp); err != nil {
 		log.Fatalf("Failed to parse response: %v", err)
 	}

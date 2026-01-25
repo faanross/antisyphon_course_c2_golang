@@ -18,8 +18,7 @@ type Server interface {
 // NewServer creates a new server based on the protocol
 func NewServer(cfg *config.ServerConfig) (Server, error) {
 	switch cfg.Protocol {
-	case "https":
-		return NewHTTPSServer(cfg), nil
+	// TODO implement constructor call for https, nil for error
 	case "dns":
 		return nil, fmt.Errorf("DNS not yet implemented")
 	default:

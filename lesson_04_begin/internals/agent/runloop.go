@@ -46,7 +46,7 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		default:
 		}
 
-		response, err := comm.Send(ctx)
+		// TODO: call comm.Send(), pass context as argument
 		if err != nil {
 			log.Printf("Error sending request: %v", err)
 			// Don't exit - just sleep and try again
@@ -55,15 +55,13 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		}
 
 		// Parse and display response
-		var httpsResp server.HTTPSResponse
-		if err := json.Unmarshal(response, &httpsResp); err != nil {
-			log.Fatalf("Failed to parse response: %v", err)
-		}
+		// TODO: instantiate httpsResp of type server.HTTPSResponse
+		// TODO: Unmarshall response into httpResp
 
 		log.Printf("Received response: change=%v", httpsResp.Change)
 
 		// Calculate sleep duration with jitter
-		sleepDuration := CalculateSleepDuration(cfg.Timing.Delay, cfg.Timing.Jitter)
+		// TODO: instantiate sleepDuration by calling helper function CalculateSleepDuration()
 		log.Printf("Sleeping for %v", sleepDuration)
 
 		// Sleep with cancellation support

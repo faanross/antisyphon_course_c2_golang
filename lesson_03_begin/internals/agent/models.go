@@ -16,8 +16,7 @@ type Agent interface {
 // NewAgent creates a new agent based on the protocol
 func NewAgent(cfg *config.AgentConfig) (Agent, error) {
 	switch cfg.Protocol {
-	case "https":
-		return NewHTTPSAgent(cfg.ServerIP, cfg.ServerPort), nil
+	// TODO: Update https to add our constructor call
 	case "dns":
 		return nil, fmt.Errorf("DNS not yet implemented")
 	default:

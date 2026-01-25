@@ -1,14 +1,12 @@
 package main
 
 import (
+	"c2framework/internals/agent"
+	"c2framework/internals/config"
 	"context"
 	"log"
 	"os"
 	"os/signal"
-	"time"
-
-	"c2framework/internals/agent"
-	"c2framework/internals/config"
 )
 
 func main() {
@@ -18,8 +16,9 @@ func main() {
 		ServerIP:   "127.0.0.1",
 		ServerPort: "8443",
 		Timing: config.TimingConfig{
-			Delay:  5 * time.Second,
-			Jitter: 50,
+			// TODO: Assign Delay as 5 seconds
+			// TODO: Assign Jitter as 50 (as in 50%)
+
 		},
 	}
 
@@ -38,9 +37,8 @@ func main() {
 		log.Printf("Starting %s client run loop", cfg.Protocol)
 		log.Printf("Delay: %v, Jitter: %d%%", cfg.Timing.Delay, cfg.Timing.Jitter)
 
-		if err := agent.RunLoop(ctx, comm, cfg); err != nil {
-			log.Printf("Run loop error: %v", err)
-		}
+		// TODO now call agent.RunLoop to start our server
+		
 	}()
 
 	// Wait for interrupt signal

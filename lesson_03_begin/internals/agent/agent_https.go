@@ -10,8 +10,8 @@ import (
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
-	serverAddr string
-	client     *http.Client
+	// TODO: add serverAddr of type string
+	// TODO: add client of type *http.Client
 }
 
 // NewHTTPSAgent creates a new HTTPS agent
@@ -24,7 +24,7 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 	// Create HTTP client with custom TLS config
 	client := &http.Client{
 		Transport: &http.Transport{
-			TLSClientConfig: tlsConfig,
+			// TODO: assign TLSClientConfig as struct we created above
 		},
 	}
 
@@ -36,8 +36,7 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 
 // Send implements Agent.Send for HTTPS
 func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
-	// Construct the URL
-	url := fmt.Sprintf("https://%s/", c.serverAddr)
+	// TODO: Construct url with Sprintf and serverAddr
 
 	// Create GET request
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -46,7 +45,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	}
 
 	// Send request
-	resp, err := c.client.Do(req)
+	// TODO: call c.client.Do(), pass req as argument, to send our request
 	if err != nil {
 		return nil, fmt.Errorf("sending request: %w", err)
 	}
@@ -59,7 +58,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	}
 
 	// Read response body
-	body, err := io.ReadAll(resp.Body)
+	// TODO: read the response body using io.ReadAll()
 	if err != nil {
 		return nil, fmt.Errorf("reading response: %w", err)
 	}

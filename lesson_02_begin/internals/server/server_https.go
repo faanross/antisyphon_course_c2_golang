@@ -15,21 +15,21 @@ import (
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
-	addr    string
-	server  *http.Server
+	// TODO: create field addr of type string
+	// TODO: create server of type *http.Server
 	tlsCert string
 	tlsKey  string
 }
 
 // HTTPSResponse represents the JSON response for HTTPS
 type HTTPSResponse struct {
-	Change bool `json:"change"`
+	// TODO: create field Change of type bool, add json tags
 }
 
 // NewHTTPSServer creates a new HTTPS server
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
-		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		// TODO assign addr by using Sprintf and combining ListeningInterface and ListeningPort
 		tlsCert: cfg.TlsCert,
 		tlsKey:  cfg.TlsKey,
 	}
@@ -40,28 +40,24 @@ func (s *HTTPSServer) Start() error {
 	// Create Chi router
 	r := chi.NewRouter()
 
-	// Define our GET endpoint
-	r.Get("/", RootHandler)
+	// TODO: Define our GET endpoint at /, calls RootHandler
 
 	// Create the HTTP server
 	s.server = &http.Server{
-		Addr:    s.addr,
-		Handler: r,
+		// TODO: Addr is assigned s.addr
+		// TODO: Handler is assigned r
+
 	}
 
 	// Start the server
-	return s.server.ListenAndServeTLS(s.tlsCert, s.tlsKey)
+	// TODO call method ListenAndServeTLS, pass cert and key, return call directly
 }
 
 // Stop implements Server.Stop for HTTPS
 func (s *HTTPSServer) Stop() error {
-	// If there's no server, nothing to stop
-	if s.server == nil {
-		return nil
-	}
+	// TODO: If there's no server, nothing to stop, return nil
 
-	// Give the server 5 seconds to shut down gracefully
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	// TODO: Create context to give the server 5 seconds to shut down gracefully
 	defer cancel()
 
 	return s.server.Shutdown(ctx)
@@ -73,7 +69,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Create response with change set to false
 	response := HTTPSResponse{
-		Change: false,
+		// TODO: Assign default to Change as false
 	}
 
 	// Set content type to JSON

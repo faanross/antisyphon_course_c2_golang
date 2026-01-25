@@ -9,10 +9,10 @@ import (
 
 func main() {
 	agentCfg := config.AgentConfig{
-		Protocol: "https",
+		// TODO: Assign starting protocol as https
 	}
 
-	_, err := agent.NewAgent(&agentCfg)
+	// TODO: call the agent.NewAgent constructor, pass pointer to agentCfg
 	if err != nil {
 		fmt.Println(err)
 	}

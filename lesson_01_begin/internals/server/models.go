@@ -8,18 +8,18 @@ import (
 
 // Server defines the contract for servers
 type Server interface {
+	// TODO: Add Start(), no arguments, returns error
 	// Start begins listening for requests
-	Start() error
 
+	// TODO: Add Stop(), no arguments, returns error
 	// Stop gracefully shuts down the server
-	Stop() error
+
 }
 
 // NewServer creates a new server based on the protocol
 func NewServer(cfg *config.ServerConfig) (Server, error) {
 	switch cfg.Protocol {
-	case "https":
-		return nil, fmt.Errorf("HTTPS not yet implemented")
+	// TODO: Add a case for https, similar to dns
 	case "dns":
 		return nil, fmt.Errorf("DNS not yet implemented")
 	default:

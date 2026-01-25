@@ -1,13 +1,12 @@
 package config
 
-import "time"
-
 // AgentConfig holds all configuration values for the agent
 type AgentConfig struct {
-	ServerIP   string
-	ServerPort string
-	Timing     TimingConfig
-	Protocol   string // this will be the starting protocol
+
+	// TODO: Add field ServerIP of type string
+	// TODO: Add field ServerPort of type string
+	// TODO: Add field Timing of type TimingConfig (i.e. another struct!)
+	// TODO: Add field Protocol of type string
 }
 
 // ServerConfig holds all configuration values for the server
@@ -21,6 +20,7 @@ type ServerConfig struct {
 
 // TimingConfig holds timing-related configuration
 type TimingConfig struct {
-	Delay  time.Duration // Base delay between cycles
-	Jitter int           // Jitter percentage (0-100)
+	// TODO: Add field Delay of type time.Duration
+	// TODO: Add field Jitter of type int
+	
 }

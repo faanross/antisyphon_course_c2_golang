@@ -12,8 +12,8 @@ import (
 
 // DNSServer implements the Server interface for DNS
 type DNSServer struct {
-	addr   string
-	server *dns.Server
+	// TODO: create addr of type string
+	// TODO: create server of type *dns.Server
 }
 
 // NewDNSServer creates a new DNS server
@@ -27,9 +27,9 @@ func NewDNSServer(cfg *config.ServerConfig) *DNSServer {
 func (s *DNSServer) Start() error {
 	// Create and configure the DNS server
 	s.server = &dns.Server{
-		Addr:    s.addr,
-		Net:     "udp",
-		Handler: dns.HandlerFunc(s.handleDNSRequest),
+		// TODO: assign Addr field as s.addr
+		// TODO: assign Net field as udp
+		// TODO: assign Handler field by calling dns.HandlerFunc, passing s.handleDNSRequest as argument
 	}
 
 	// Start server
@@ -42,22 +42,23 @@ func (s *DNSServer) Stop() error {
 		return nil
 	}
 	log.Println("Stopping DNS server...")
-	return s.server.Shutdown()
+
+	// TODO: return method call - s.server.ShutDown()
 }
 
 // handleDNSRequest is our DNS Server's handler
 func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 	// Create response message
-	m := new(dns.Msg)
-	m.SetReply(r)
-	m.Authoritative = true
+
+	// TODO: create message m, call new() pass dns.Msg as argument
+	// TODO: call method SetReply() on m, pass r as argument
+	// TODO: set m.Authoritative to true
 
 	// Process each question
 	for _, question := range r.Question {
 		// We only handle A records for now
-		if question.Qtype != dns.TypeA {
-			continue
-		}
+
+		// TODO: Conditional asks if question.Qtype is not equal to dns.TypeA, then continue
 
 		// Log the query
 		log.Printf("DNS query for: %s", question.Name)
@@ -70,11 +71,11 @@ func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 				Class:  dns.ClassINET,
 				Ttl:    300,
 			},
-			A: net.ParseIP("42.42.42.42"),
+			// TODO set A to value returned by net.ParseIP, pass string 42.42.42.42 as argument
 		}
 		m.Answer = append(m.Answer, rr)
 	}
 
 	// Send response
-	w.WriteMsg(m)
+	// TODO: call WriteMsg on w, pass m as argument
 }

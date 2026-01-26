@@ -12,7 +12,7 @@ import (
 func main() {
 	// Create server config directly in code
 	cfg := &config.ServerConfig{
-		Protocol:           "https",
+		Protocol:           "dns",
 		ListeningInterface: "0.0.0.0",
 		ListeningPort:      "8443",
 		TlsCert:            "./certs/server.crt",

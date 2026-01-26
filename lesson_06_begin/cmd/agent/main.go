@@ -14,7 +14,7 @@ import (
 func main() {
 	// Create agent config - temporarily set to dns for testing
 	cfg := &config.AgentConfig{
-		Protocol:   "dns",
+		// TODO: Set Protocol equal to dns
 		ServerIP:   "127.0.0.1",
 		ServerPort: "8443",
 		Timing: config.TimingConfig{
@@ -34,7 +34,7 @@ func main() {
 	defer cancel()
 
 	// Temporary test: single send (runloop doesn't handle DNS yet)
-	comm.Send(ctx)
+	// TODO: Call Send() on comm, pass context as arg
 
 	// Wait for interrupt signal
 	sigChan := make(chan os.Signal, 1)

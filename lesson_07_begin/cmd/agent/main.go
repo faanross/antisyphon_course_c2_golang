@@ -38,9 +38,9 @@ func main() {
 		log.Printf("Starting %s client run loop", cfg.Protocol)
 		log.Printf("Delay: %v, Jitter: %d%%", cfg.Timing.Delay, cfg.Timing.Jitter)
 
-		if err := agent.RunLoop(ctx, comm, cfg); err != nil {
-			log.Printf("Run loop error: %v", err)
-		}
+		// TODO: call agent.RunLoop with 3 arguments - ctx, comm, and crf
+		// TODO: handle error
+
 	}()
 
 	// Wait for interrupt signal

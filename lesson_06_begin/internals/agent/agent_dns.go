@@ -10,8 +10,8 @@ import (
 
 // DNSAgent implements the Agent interface for DNS
 type DNSAgent struct {
-	serverAddr string
-	client     *dns.Client
+	// TODO: create serverAddr of type string
+	// TODO: create client of type *dns.Client
 }
 
 // NewDNSAgent creates a new DNS client
@@ -25,11 +25,11 @@ func NewDNSAgent(serverIP string, serverPort string) *DNSAgent {
 // Send implements Agent.Send for DNS
 func (c *DNSAgent) Send(ctx context.Context) ([]byte, error) {
 	// Create DNS query message
-	m := new(dns.Msg)
+	// TODO: create m by calling new(), pass dns.Msg as arg
 
 	// For now, we'll query for a fixed domain
 	domain := "www.thisdoesnotexist.com."
-	m.SetQuestion(domain, dns.TypeA)
+	// TODO: call SetQuestion() on m, pass the domain and specify A type record
 	log.Printf("Sending DNS query for: %s", domain)
 
 	// Send query
@@ -39,16 +39,14 @@ func (c *DNSAgent) Send(ctx context.Context) ([]byte, error) {
 	}
 
 	// Check if we got an answer
-	if len(r.Answer) == 0 {
-		return nil, fmt.Errorf("no answer received")
-	}
+	// TODO: check if we got an answer by seeing if len of r.Answer is 0
 
 	// Extract the first A record
 	for _, ans := range r.Answer {
 		if a, ok := ans.(*dns.A); ok {
 			// Return the IP address as string
-			ipStr := a.A.String()
-			log.Printf("Received DNS response: %s -> %s", domain, ipStr)
+			// TODO: set ipStr as a.A.String()
+			log.Printf("Received DNS response: %s -> %s", domain, ipStr)s
 			return []byte(ipStr), nil
 		}
 	}

@@ -73,9 +73,11 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
 
 	// Check if we should transition
-	shouldChange := control.Manager.CheckAndReset()
+
+	// TODO: create shouldChange by calling CheckAndReset() method
+
 	response := HTTPSResponse{
-		Change: shouldChange,
+		// TODO: set Change directly equal to shouldChange
 	}
 	if shouldChange {
 		log.Printf("HTTPS: Sending transition signal (change=true)")

@@ -6,14 +6,13 @@ import (
 	"os/signal"
 
 	"c2framework/internals/config"
-	"c2framework/internals/control"
 	"c2framework/internals/server"
 )
 
 func main() {
 	// Create server config directly in code
 	cfg := &config.ServerConfig{
-		Protocol:           "dns",
+		Protocol:           "https",
 		ListeningInterface: "127.0.0.1",
 		ListeningPort:      "8443",
 		TlsCert:            "./certs/server.crt",
@@ -21,7 +20,7 @@ func main() {
 	}
 
 	// Start our control API
-	control.StartControlAPI()
+	// TODO: call StartControlAPI() from control package
 
 	// Create server using interface's factory function
 	srv, err := server.NewServer(cfg)

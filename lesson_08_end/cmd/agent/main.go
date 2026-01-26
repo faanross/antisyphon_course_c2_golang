@@ -14,7 +14,7 @@ import (
 func main() {
 	// Create agent config directly in code
 	cfg := &config.AgentConfig{
-		Protocol:   "dns",
+		Protocol:   "https",
 		ServerIP:   "127.0.0.1",
 		ServerPort: "8443",
 		Timing: config.TimingConfig{

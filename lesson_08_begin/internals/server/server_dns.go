@@ -64,13 +64,14 @@ func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 		log.Printf("DNS query for: %s", question.Name)
 
 		// Check if we should transition
-		shouldTransition := control.Manager.CheckAndReset()
+		// TODO: create shouldTransition, call our new method CheckAndReset()
+
 		var responseIP string
 		if shouldTransition {
-			responseIP = "69.69.69.69"
+			// TODO: if bool is true, set responseIP to 69.69.69.69
 			log.Printf("DNS: Sending transition signal (69.69.69.69)")
 		} else {
-			responseIP = "42.42.42.42"
+			// TODO: if bool is false, set responseIP to 42.42.42.42
 			log.Printf("DNS: Normal response (42.42.42.42)")
 		}
 
@@ -82,7 +83,7 @@ func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 				Class:  dns.ClassINET,
 				Ttl:    300,
 			},
-			A: net.ParseIP(responseIP),
+			// TODO: set A with net.ParseIP, pass our responseIP variable
 		}
 		m.Answer = append(m.Answer, rr)
 	}

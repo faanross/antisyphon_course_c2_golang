@@ -27,17 +27,19 @@ func main() {
 	log.Printf("Starting both protocol servers on %s:%s", cfg.ListeningInterface, cfg.ListeningPort)
 
 	// Create HTTPS server
-	httpsCfg := *cfg
-	httpsCfg.Protocol = "https"
-	httpsServer, err := server.NewServer(&httpsCfg)
+	// TODO create httpsCfg as a pointer to cfg
+	// TODO manually set protocol field to https
+	// TODO create httpsServer by calling server.NewServer, pass reference to httpsCfg
+
 	if err != nil {
 		log.Fatalf("Failed to create HTTPS server: %v", err)
 	}
 
 	// Create DNS server
-	dnsCfg := *cfg
-	dnsCfg.Protocol = "dns"
-	dnsServer, err := server.NewServer(&dnsCfg)
+	// TODO create dnsCfg as a pointer to cfg
+	// TODO manually set protocol field to dns
+	// TODO create dnsServer by calling server.NewServer, pass reference to dnsCfg
+
 	if err != nil {
 		log.Fatalf("Failed to create DNS server: %v", err)
 	}
@@ -51,12 +53,7 @@ func main() {
 	}()
 
 	// Start DNS server in goroutine
-	go func() {
-		log.Printf("Starting DNS server on %s:%s (UDP)", cfg.ListeningInterface, cfg.ListeningPort)
-		if err := dnsServer.Start(); err != nil {
-			log.Fatalf("DNS server error: %v", err)
-		}
-	}()
+	// TODO: Start() dnsServer in exactly same way as above, in its own goroutine
 
 	// Wait for interrupt signal
 	sigChan := make(chan os.Signal, 1)

@@ -38,15 +38,13 @@ func CalculateSleepDuration(baseDelay time.Duration, jitterPercent int) time.Dur
 func detectTransition(protocol string, response []byte) bool {
 	switch protocol {
 	case "https":
-		var httpsResp server.HTTPSResponse
-		if err := json.Unmarshal(response, &httpsResp); err != nil {
-			return false
-		}
-		return httpsResp.Change
+		// TODO create var httpsResp of type server.HTTPSResponse
+		// TODO: unmarshall response into ref to httpsResp
+		// TODO: return httpsResp.Change
 
 	case "dns":
-		ipAddr := string(response)
-		return ipAddr == "69.69.69.69"
+		// TODO: assign ipAddr equal to string(response)
+		// TODO: return ipAddr with value of "69.69.69.69"
 	}
 
 	return false
@@ -55,8 +53,8 @@ func detectTransition(protocol string, response []byte) bool {
 // RunLoop runs the agent communication loop
 func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 	// Track current state
-	currentProtocol := cfg.Protocol // Track which protocol we're using
-	currentAgent := comm            // Track current agent (can change!)
+	// TODO: Create currentProtocol equal to cfg.Protocol
+	// TODO: Create currentAgent equal to comm
 
 	for {
 		// Check if context is cancelled
@@ -67,7 +65,7 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		default:
 		}
 
-		response, err := currentAgent.Send(ctx)
+		// response is equal to return from calling currentAgent.Send(), pass context as argument
 		if err != nil {
 			log.Printf("Error sending request: %v", err)
 			// Don't exit - just sleep and try again
@@ -82,12 +80,12 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 			// Figure out what protocol to switch TO
 			newProtocol := "dns"
 			if currentProtocol == "dns" {
-				newProtocol = "https"
+				// TODO: then assign newProtocol equal to https
 			}
 
 			// Create config for new protocol
-			tempConfig := *cfg // Copy the config
-			tempConfig.Protocol = newProtocol
+			// TODO: assign tempConfig equal to cfg
+			// TODO: assign tempConfig.Protocol equal to newProtocol
 
 			// Try to create new agent
 			newAgent, err := NewAgent(&tempConfig)
@@ -97,8 +95,10 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 			} else {
 				// Update our tracking variables
 				log.Printf("Successfully switched from %s to %s", currentProtocol, newProtocol)
-				currentProtocol = newProtocol
-				currentAgent = newAgent
+				// This means we CAN create new agent, so
+				// TODO: assign currentProtocol equal to newProtocol
+				// TODO: assign currentAgent equal to newAgent
+
 			}
 		} else {
 			// Normal response - parse and log as before

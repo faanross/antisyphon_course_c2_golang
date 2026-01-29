@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"time"
 
-	"c2framework/internals/config"
 )
 
 const (
@@ -20,7 +19,7 @@ const (
 )
 
 // VerifyRequest checks HMAC signature and timestamp validity
-func VerifyRequest(r *http.Request) error {
+func VerifyRequest(r *http.Request, secret string) error {
 	// Extract headers
 	timestamp := r.Header.Get("X-Auth-Timestamp")
 	signature := r.Header.Get("X-Auth-Signature")
@@ -45,7 +44,7 @@ func VerifyRequest(r *http.Request) error {
 
 	// Recompute the signature
 	message := timestamp + string(body)
-	expectedSignature := serverComputeHMAC(message, config.SharedSecret)
+	expectedSignature := serverComputeHMAC(message, secret)
 
 	// Constant-time comparison to prevent timing attacks
 	if !hmac.Equal([]byte(signature), []byte(expectedSignature)) {

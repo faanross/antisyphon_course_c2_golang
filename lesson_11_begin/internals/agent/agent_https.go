@@ -10,12 +10,13 @@ import (
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
-	serverAddr string
-	client     *http.Client
+	serverAddr   string
+	client       *http.Client
+	sharedSecret string
 }
 
 // NewHTTPSAgent creates a new HTTPS agent
-func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
+func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTTPSAgent {
 	// Create TLS config that accepts self-signed certificates
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
@@ -29,8 +30,9 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 	}
 
 	return &HTTPSAgent{
-		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
-		client:     client,
+		serverAddr:   fmt.Sprintf("%s:%s", serverIP, serverPort),
+		client:       client,
+		sharedSecret: sharedSecret,
 	}
 }
 
@@ -49,7 +51,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	}
 
 	// Sign the request with HMAC
-	SignRequest(req, body)
+	// TODO: Call SignRequest, pass req, body, and c.sharedSecret as arguments
 
 	// Send request
 	resp, err := c.client.Do(req)

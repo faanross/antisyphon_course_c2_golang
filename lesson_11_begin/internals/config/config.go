@@ -2,16 +2,13 @@ package config
 
 import "time"
 
-// SharedSecret is the key used for HMAC authentication
-// In production, use a cryptographically random key and never commit to source control
-const SharedSecret = "your-super-secret-key-change-in-production"
-
 // AgentConfig holds all configuration values for the agent
 type AgentConfig struct {
-	ServerIP   string
-	ServerPort string
-	Timing     TimingConfig
-	Protocol   string // this will be the starting protocol
+	ServerIP     string
+	ServerPort   string
+	Timing       TimingConfig
+	Protocol     string // this will be the starting protocol
+	SharedSecret string // HMAC authentication key
 }
 
 // ServerConfig holds all configuration values for the server
@@ -21,6 +18,7 @@ type ServerConfig struct {
 	Protocol           string // this will be the starting protocol
 	TlsKey             string
 	TlsCert            string
+	SharedSecret       string // HMAC authentication key
 }
 
 // TimingConfig holds timing-related configuration

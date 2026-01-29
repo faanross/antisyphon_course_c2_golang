@@ -15,8 +15,9 @@ const NonceSize = 12
 
 // DeriveKey derives a 32-byte AES-256 key from the shared secret
 func DeriveKey(secret string) []byte {
-	hash := sha256.Sum256([]byte(secret))
-	return hash[:]
+	// TODO: Create hash by calling sha256.Sum256(), pass []byte(secret) as argument
+	// return hash[:]
+
 }
 
 // Encrypt encrypts plaintext using AES-GCM and returns base64-encoded result
@@ -24,13 +25,13 @@ func Encrypt(plaintext []byte, secret string) (string, error) {
 	key := DeriveKey(secret)
 
 	// Create AES cipher
-	block, err := aes.NewCipher(key)
+	// TODO: create block by calling aes.NewCipher(), pass key as argument
 	if err != nil {
 		return "", fmt.Errorf("creating cipher: %w", err)
 	}
 
 	// Create GCM mode
-	gcm, err := cipher.NewGCM(block)
+	// TODO: create gcm by calling cipher.NewGCM, pass block as argument
 	if err != nil {
 		return "", fmt.Errorf("creating GCM: %w", err)
 	}
@@ -42,10 +43,10 @@ func Encrypt(plaintext []byte, secret string) (string, error) {
 	}
 
 	// Encrypt and append tag
-	ciphertext := gcm.Seal(nil, nonce, plaintext, nil)
+	// TODO: create ciphertext by calling gcm.Seal()
 
 	// Prepend nonce to ciphertext
-	result := append(nonce, ciphertext...)
+	// TODO: use append to present nonce to ciphertext, assign to result
 
 	// Base64 encode for transmission
 	return base64.StdEncoding.EncodeToString(result), nil
@@ -67,8 +68,8 @@ func Decrypt(encoded string, secret string) ([]byte, error) {
 	}
 
 	// Extract nonce and ciphertext
-	nonce := data[:NonceSize]
-	ciphertext := data[NonceSize:]
+	// TODO: assign nonce to data[:NonceSize]
+	// TODO: assign ciphertext to data[NonceSize:]
 
 	// Create AES cipher
 	block, err := aes.NewCipher(key)
@@ -83,7 +84,8 @@ func Decrypt(encoded string, secret string) ([]byte, error) {
 	}
 
 	// Decrypt and verify tag
-	plaintext, err := gcm.Open(nil, nonce, ciphertext, nil)
+	// TODO: call gcm.Open(), assign return value to plaintext
+	
 	if err != nil {
 		return nil, fmt.Errorf("decryption failed: %w", err)
 	}

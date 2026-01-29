@@ -7,20 +7,18 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
-	"c2framework/internals/config"
 )
 
 // SignRequest adds HMAC authentication headers to an HTTP request
-func SignRequest(req *http.Request, body []byte) {
+func SignRequest(req *http.Request, body []byte, secret string) {
 	// Get current timestamp
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
 	// Create the message to sign: timestamp + body
-	message := timestamp + string(body)
+	// TODO: Create message equal to timestamp (for randomness) + body cast to string
 
 	// Compute HMAC-SHA256
-	signature := computeHMAC(message, config.SharedSecret)
+	// TODO: Create signature by calling computeHMAC(), pass message and secret
 
 	// Add headers
 	req.Header.Set("X-Auth-Timestamp", timestamp)
@@ -29,7 +27,7 @@ func SignRequest(req *http.Request, body []byte) {
 
 // computeHMAC calculates HMAC-SHA256 and returns hex-encoded result
 func computeHMAC(message, secret string) string {
-	mac := hmac.New(sha256.New, []byte(secret))
-	mac.Write([]byte(message))
+	// TODO: Calculate mac by calling hmac.New(), pass sha256.New and []byte(secret) as arguments
+	// TODO: Call mac.Write(), pass []byte(message) as argument
 	return hex.EncodeToString(mac.Sum(nil))
 }

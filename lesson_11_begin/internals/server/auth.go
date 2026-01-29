@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
-	"c2framework/internals/config"
 )
 
 const (
@@ -20,14 +18,13 @@ const (
 )
 
 // VerifyRequest checks HMAC signature and timestamp validity
-func VerifyRequest(r *http.Request) error {
+func VerifyRequest(r *http.Request, secret string) error {
 	// Extract headers
-	timestamp := r.Header.Get("X-Auth-Timestamp")
-	signature := r.Header.Get("X-Auth-Signature")
 
-	if timestamp == "" || signature == "" {
-		return fmt.Errorf("missing authentication headers")
-	}
+	timestamp := r.Header.Get("X-Auth-Timestamp")
+	// TODO extract signature from X-Auth-Signature header
+
+	// TODO if either timestap or signature is blank - return error
 
 	// Verify timestamp is within tolerance
 	if err := verifyTimestamp(timestamp); err != nil {
@@ -41,11 +38,11 @@ func VerifyRequest(r *http.Request) error {
 	}
 
 	// Restore the body for downstream handlers
-	r.Body = io.NopCloser(bytes.NewBuffer(body))
+	// TODO: Set r.Body to return of io.NopCloser() pass bytes.NewBuffer(body) as argument
 
 	// Recompute the signature
-	message := timestamp + string(body)
-	expectedSignature := serverComputeHMAC(message, config.SharedSecret)
+	// TODO set message equal to timestamp + string(body)
+	expectedSignature := serverComputeHMAC(message, secret)
 
 	// Constant-time comparison to prevent timing attacks
 	if !hmac.Equal([]byte(signature), []byte(expectedSignature)) {

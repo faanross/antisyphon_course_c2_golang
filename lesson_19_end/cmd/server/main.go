@@ -18,6 +18,7 @@ func main() {
 		ListeningPort:      "8443",
 		TlsCert:            "./certs/server.crt",
 		TlsKey:             "./certs/server.key",
+		SharedSecret:       "your-super-secret-key-change-in-production",
 	}
 
 	// Load our control API

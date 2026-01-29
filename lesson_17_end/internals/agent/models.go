@@ -26,7 +26,7 @@ type AgentTaskResult struct {
 func NewAgent(cfg *config.AgentConfig) (Agent, error) {
 	switch cfg.Protocol {
 	case "https":
-		return NewHTTPSAgent(cfg.ServerIP, cfg.ServerPort), nil
+		return NewHTTPSAgent(cfg.ServerIP, cfg.ServerPort, cfg.SharedSecret), nil
 	case "dns":
 		return NewDNSAgent(cfg.ServerIP, cfg.ServerPort), nil
 	default:

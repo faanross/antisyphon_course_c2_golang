@@ -1,4 +1,4 @@
-zzzpackage main
+package main
 
 import (
 	"context"

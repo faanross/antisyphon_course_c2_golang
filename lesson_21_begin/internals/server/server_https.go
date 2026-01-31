@@ -20,9 +20,9 @@ import (
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
-	addr    string
-	server  *http.Server
-	tlsCert string
+	addr         string
+	server       *http.Server
+	tlsCert      string
 	tlsKey       string
 	sharedSecret string
 }
@@ -39,8 +39,8 @@ type HTTPSResponse struct {
 // NewHTTPSServer creates a new HTTPS server
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
-		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
-		tlsCert: cfg.TlsCert,
+		addr:         fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		tlsCert:      cfg.TlsCert,
 		tlsKey:       cfg.TlsKey,
 		sharedSecret: cfg.SharedSecret,
 	}
@@ -55,7 +55,7 @@ func (s *HTTPSServer) Start() error {
 	r.With(AuthMiddleware(s.sharedSecret)).Post("/", RootHandler(s.sharedSecret))
 
 	// Define POST endpoint for results
-	r.Post("/results", ResultHandler)
+	// TODO: Add new POST endpoint at results, calls ResultHandler
 
 	// Create the HTTP server
 	s.server = &http.Server{
@@ -156,7 +156,7 @@ func RootHandler(secret string) http.HandlerFunc {
 func ResultHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
 
-	var result models.AgentTaskResult
+	// TODO: create result of type models.AgentTaskResult
 
 	// Decode the incoming result
 	if err := json.NewDecoder(r.Body).Decode(&result); err != nil {
@@ -166,9 +166,10 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Unmarshal the CommandResult to get the actual message string
-	var messageStr string
+	// TODO: create messageStr of type string
+
 	if len(result.CommandResult) > 0 {
+		// Unmarshal the CommandResult to get the actual message string
 		if err := json.Unmarshal(result.CommandResult, &messageStr); err != nil {
 			log.Printf("ERROR: Failed to unmarshal CommandResult: %v", err)
 			messageStr = string(result.CommandResult) // Fallback to raw bytes as string

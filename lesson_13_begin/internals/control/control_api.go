@@ -48,10 +48,10 @@ func (tm *TransitionManager) CheckAndReset() bool {
 // StartControlAPI starts the control API server on port 8080
 func StartControlAPI() {
 	// Create Chi router
-	r := chi.NewRouter()
+	// TODO: create chi router r with chi.NewRouter()
 
 	r.Post("/switch", handleSwitch)
-	r.Post("/command", commandHandler)
+	// TODO: create a new endpoint, Post, for /command, call commandHandler
 
 	log.Println("Starting Control API on :8080")
 	go func() {
@@ -71,10 +71,12 @@ func handleSwitch(w http.ResponseWriter, r *http.Request) {
 
 func commandHandler(w http.ResponseWriter, r *http.Request) {
 	// Instantiate custom type to receive command from client
+	// TODO: instantiate cmdClient of type CommandClient
 	var cmdClient CommandClient
 
 	// The first thing we need to do is unmarshal the request body into the custom type
-	if err := json.NewDecoder(r.Body).Decode(&cmdClient); err != nil {
+	// TODO: unmarshall request body into cmdClient
+	if err != nil {
 		log.Printf("ERROR: Failed to decode JSON: %v", err)
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode("error decoding JSON")

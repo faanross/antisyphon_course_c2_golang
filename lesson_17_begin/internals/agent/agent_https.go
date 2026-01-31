@@ -17,10 +17,10 @@ import (
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
-	serverAddr           string
-	client               *http.Client
-	sharedSecret         string
-	commandOrchestrators map[string]OrchestratorFunc
+	serverAddr   string
+	client       *http.Client
+	sharedSecret string
+	// TODO: Add field commandOrchestrators of type map[string]OrchestratorFunc
 }
 
 // NewHTTPSAgent creates a new HTTPS agent
@@ -38,10 +38,10 @@ func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTT
 	}
 
 	agent := &HTTPSAgent{
-		serverAddr:           fmt.Sprintf("%s:%s", serverIP, serverPort),
-		client:               client,
-		sharedSecret:         sharedSecret,
-		commandOrchestrators: make(map[string]OrchestratorFunc),
+		serverAddr:   fmt.Sprintf("%s:%s", serverIP, serverPort),
+		client:       client,
+		sharedSecret: sharedSecret,
+		// TODO: Assign commandOrchestrators field, instantiate map using make()
 	}
 
 	registerCommands(agent) // Register individual commands
@@ -122,7 +122,7 @@ func (agent *HTTPSAgent) SendResult(resultData []byte) error {
 	log.Printf("|RETURN RESULTS|-> Sending %d bytes of results via POST to %s", len(resultData), targetURL)
 
 	// Create the HTTP POST request
-	req, err := http.NewRequest(http.MethodPost, targetURL, bytes.NewReader(resultData))
+	// TODO: create our HTTP POST request (req) using http.NewRequest()
 	if err != nil {
 		log.Printf("|ERR SendResult| Failed to create results request: %v", err)
 		return fmt.Errorf("failed to create http results request: %w", err)
@@ -132,7 +132,7 @@ func (agent *HTTPSAgent) SendResult(resultData []byte) error {
 	req.Header.Set("Content-Type", "application/json")
 
 	// Execute the request
-	resp, err := agent.client.Do(req)
+	// TODO: Send the request using agent.client.Do(), log response
 	if err != nil {
 		log.Printf("|ERR| Results POST request failed: %v", err)
 		return fmt.Errorf("http results post request failed: %w", err)

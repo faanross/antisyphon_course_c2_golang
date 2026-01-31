@@ -8,11 +8,11 @@ import (
 )
 
 // OrchestratorFunc defines the signature for command orchestrator functions
-type OrchestratorFunc func(agent *HTTPSAgent, job *server.HTTPSResponse) AgentTaskResult
+// TODO: define function type OrchestratorFunc, arguments are pointers to HTTPSAgent and server.HTTPSResponse, returns AgentTaskResult
 
 // registerCommands registers all available command orchestrators
 func registerCommands(agent *HTTPSAgent) {
-	// agent.commandOrchestrators["shellcode"] = (*HTTPSAgent).orchestrateShellcode
+	// TODO: register "shellcode" agent.commandOrchestrators[], assign value as (*HTTPSAgent).orchestrateShellcode
 	// Register other commands here in the future
 }
 
@@ -20,14 +20,14 @@ func registerCommands(agent *HTTPSAgent) {
 func (agent *HTTPSAgent) ExecuteTask(job *server.HTTPSResponse) {
 	log.Printf("AGENT IS NOW PROCESSING COMMAND %s with ID %s", job.Command, job.JobID)
 
-	var result AgentTaskResult
+	// TODO: create result of type AgentTaskResult
 
 	// Look up the orchestrator for this command
-	orchestrator, found := agent.commandOrchestrators[job.Command]
+	// TODO: look up job.Command key in agent.commandOrchestrators[], assign value and found bool
 
 	if found {
 		// Call the orchestrator
-		result = orchestrator(agent, job)
+		// TODO: call orchestrator with agent and job args, assign return to result
 	} else {
 		// Command not recognized
 		log.Printf("|WARN AGENT TASK| Received unknown command: '%s' (ID: %s)", job.Command, job.JobID)
@@ -45,9 +45,10 @@ func (agent *HTTPSAgent) ExecuteTask(job *server.HTTPSResponse) {
 		return // Cannot send result if marshalling fails
 	}
 
-	// Send the result back to the server
 	log.Printf("|AGENT TASK|-> Sending result for Task ID %s (%d bytes)...", job.JobID, len(resultBytes))
-	err = agent.SendResult(resultBytes)
+
+	// Send the result back to the server
+	// TODO: call agent.SendResult(), pass resultBytes as arg
 	if err != nil {
 		log.Printf("|ERR AGENT TASK| Failed to send result for Task ID %s: %v", job.JobID, err)
 	}

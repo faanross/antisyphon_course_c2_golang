@@ -15,22 +15,22 @@ func validateShellcodeCommand(rawArgs json.RawMessage) error {
 		return fmt.Errorf("shellcode command requires arguments")
 	}
 
-	var args ShellcodeArgsClient
+	// TODO: create args of type ShellcodeArgsClient
 
 	if err := json.Unmarshal(rawArgs, &args); err != nil {
 		return fmt.Errorf("invalid argument format: %w", err)
 	}
 
-	if args.FilePath == "" {
-		return fmt.Errorf("file_path is required")
-	}
+	// TODO: make sure args.FilePath is not empty, if so return fmt.Errorf
 
 	if args.ExportName == "" {
 		return fmt.Errorf("export_name is required")
 	}
 
 	// Check if file exists
-	if _, err := os.Stat(args.FilePath); os.IsNotExist(err) {
+	// TODO: Conditional if see if file exists using both os.Stat and os.IsNotExist
+
+	{
 		return fmt.Errorf("file does not exist: %s", args.FilePath)
 	}
 
@@ -42,27 +42,29 @@ func validateShellcodeCommand(rawArgs json.RawMessage) error {
 // processShellcodeCommand reads the DLL file and converts to base64
 func processShellcodeCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 
-	var clientArgs ShellcodeArgsClient
+	// TODO: Create clientArgs of type ShellcodeArgsClient
 
 	if err := json.Unmarshal(rawArgs, &clientArgs); err != nil {
 		return nil, fmt.Errorf("unmarshaling args: %w", err)
 	}
 
 	// Read the DLL file
-	file, err := os.Open(clientArgs.FilePath)
+	// TODO create file by calling os.Open()
+
 	if err != nil {
 		return nil, fmt.Errorf("opening file: %w", err)
 	}
 	defer file.Close()
 
-	fileBytes, err := io.ReadAll(file)
+	// TODO create fileBytes by calling os.ReadAll()
+
 	if err != nil {
 		return nil, fmt.Errorf("reading file: %w", err)
 	}
 
 	// Convert to base64
-	shellcodeB64 := base64.StdEncoding.EncodeToString(fileBytes)
-
+	// TODO create shellcodeB64 by calling base64.StdEncoding.EncodeToString()
+	
 	// Create the arguments that will be sent to the agent
 	agentArgs := ShellcodeArgsAgent{
 		ShellcodeBase64: shellcodeB64,

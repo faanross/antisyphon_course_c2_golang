@@ -84,13 +84,13 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Normalize command to lowercase
-	cmdClient.Command = strings.ToLower(cmdClient.Command)
+	// TODO: normalize cmdClient.Command by using strings.ToLower()
 
 	var commandReceived = fmt.Sprintf("Received command: %s", cmdClient.Command)
 	log.Printf(commandReceived)
 
 	// STEP 1: Check if command exists
-	cmdConfig, exists := validCommands[cmdClient.Command]
+	// TODO look if cmdConfig exists as value inside of validCommands map
 	if !exists {
 		var commandInvalid = fmt.Sprintf("ERROR: Unknown command: %s", cmdClient.Command)
 		log.Printf(commandInvalid)
@@ -100,7 +100,8 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// STEP 2: Validate arguments (if validator exists)
-	if cmdConfig.Validator != nil {
+	// TODO: call cmdConfig.Validator
+	{
 		if err := cmdConfig.Validator(cmdClient.Arguments); err != nil {
 			var commandInvalid = fmt.Sprintf("ERROR: Validation failed for '%s': %v", cmdClient.Command, err)
 			log.Printf(commandInvalid)
@@ -111,7 +112,8 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// STEP 3: Process arguments (if processor exists)
-	if cmdConfig.Processor != nil {
+	// TODO: call cmdConfig.Processor
+	{
 		processedArgs, err := cmdConfig.Processor(cmdClient.Arguments)
 		if err != nil {
 			var commandInvalid = fmt.Sprintf("ERROR: Processing failed for '%s': %v", cmdClient.Command, err)

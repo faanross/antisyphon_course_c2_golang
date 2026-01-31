@@ -3,10 +3,10 @@ package control
 import "encoding/json"
 
 // CommandValidator validates command-specific arguments
-type CommandValidator func(json.RawMessage) error
+// TODO: Create CommandValidator type, function, accepts json.RawMessage, returns error
 
 // CommandProcessor processes command-specific arguments
-type CommandProcessor func(json.RawMessage) (json.RawMessage, error)
+// TODO: Create CommandProcessor type, function, accepts json.RawMessage, returns json.RawMessage + error
 
 // Registry of valid commands with their validators and processors
 var validCommands = map[string]struct {
@@ -14,8 +14,8 @@ var validCommands = map[string]struct {
 	Processor CommandProcessor
 }{
 	"shellcode": {
-		Validator: validateShellcodeCommand,
-		Processor: processShellcodeCommand,
+		// TODO: assign Validator type validateShellcodeCommand
+		// TODO: assign Processor type processShellcodeCommand
 	},
 	"whoami": {}, // No arguments needed
 }

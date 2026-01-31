@@ -3,7 +3,6 @@ package control
 import (
 	"encoding/json"
 	"log"
-	"sync"
 )
 
 // CommandValidator validates command-specific arguments
@@ -26,20 +25,19 @@ var validCommands = map[string]struct {
 
 // CommandQueue stores commands ready for agent pickup
 type CommandQueue struct {
-	PendingCommands []CommandClient
-	mu              sync.Mutex
+	// TODO: Add field PendingCommands of type []CommandClient
+	// TODO: add mutex
 }
 
 // AgentCommands is the global command queue
 var AgentCommands = CommandQueue{
-	PendingCommands: make([]CommandClient, 0),
+	// TODO: Assign field PendingCommands, use make() to instantiate
 }
 
 // addCommand adds a validated command to the queue
 func (cq *CommandQueue) addCommand(command CommandClient) {
-	cq.mu.Lock()
-	defer cq.mu.Unlock()
+	// TODO: Lock mutex + defer Unlock
 
-	cq.PendingCommands = append(cq.PendingCommands, command)
+	// TODO: append command to cq.PendingCommands using append()
 	log.Printf("QUEUED: %s", command.Command)
 }

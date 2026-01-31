@@ -18,9 +18,9 @@ import (
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
-	addr    string
-	server  *http.Server
-	tlsCert string
+	addr         string
+	server       *http.Server
+	tlsCert      string
 	tlsKey       string
 	sharedSecret string
 }
@@ -33,8 +33,8 @@ type HTTPSResponse struct {
 // NewHTTPSServer creates a new HTTPS server
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
-		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
-		tlsCert: cfg.TlsCert,
+		addr:         fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		tlsCert:      cfg.TlsCert,
 		tlsKey:       cfg.TlsKey,
 		sharedSecret: cfg.SharedSecret,
 	}
@@ -87,7 +87,7 @@ func RootHandler(secret string) http.HandlerFunc {
 		log.Printf("Payload pre-decryption: %s", string(encryptedBody))
 
 		// Decrypt the payload
-		plaintext, err := crypto.Decrypt(string(encryptedBody), secret)
+		// TODO: call crypto.Decrypt() to decrypt, assign return to new car plaintext
 		if err != nil {
 			log.Printf("Decryption failed: %v", err)
 			http.Error(w, "Decryption failed", http.StatusBadRequest)

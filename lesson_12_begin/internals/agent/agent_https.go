@@ -14,7 +14,7 @@ import (
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
-	serverAddr string
+	serverAddr   string
 	client       *http.Client
 	sharedSecret string
 }
@@ -34,7 +34,7 @@ func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTT
 	}
 
 	return &HTTPSAgent{
-		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
+		serverAddr:   fmt.Sprintf("%s:%s", serverIP, serverPort),
 		client:       client,
 		sharedSecret: sharedSecret,
 	}
@@ -52,7 +52,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	plaintext, _ := json.Marshal(checkInData)
 
 	// Encrypt the payload
-	encryptedBody, err := crypto.Encrypt(plaintext, c.sharedSecret)
+	// TODO: create encryptedBody by calling crypto.Encrypt()
 	if err != nil {
 		return nil, fmt.Errorf("encrypting payload: %w", err)
 	}
@@ -67,7 +67,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	req.Header.Set("Content-Type", "application/octet-stream")
 
 	// Sign the request (from previous lesson)
-	SignRequest(req, []byte(encryptedBody), c.sharedSecret)
+	// TODO: call SignRequest, arguments req, []byte(encryptedBody) and c.sharedSecret
 
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -86,7 +86,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	}
 
 	// Decrypt response
-	decrypted, err := crypto.Decrypt(string(encryptedResponse), c.sharedSecret)
+	// TODO: create decrypted by calling crypto.Decrypt()
 	if err != nil {
 		return nil, fmt.Errorf("decrypting response: %w", err)
 	}

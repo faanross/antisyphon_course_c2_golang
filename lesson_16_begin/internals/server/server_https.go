@@ -19,27 +19,28 @@ import (
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
-	addr    string
-	server  *http.Server
-	tlsCert string
+	addr         string
+	server       *http.Server
+	tlsCert      string
 	tlsKey       string
 	sharedSecret string
 }
 
 // HTTPSResponse represents the JSON response for HTTPS
 type HTTPSResponse struct {
-	Change    bool            `json:"change"`
-	Job       bool            `json:"job"`
-	JobID     string          `json:"job_id,omitempty"`
-	Command   string          `json:"command,omitempty"`
-	Arguments json.RawMessage `json:"data,omitempty"`
+	Change bool `json:"change"`
+	// TODO: add field Job bool with json tags
+	// TODO: add field JobID string with json tags (optional)
+	// TODO: add field Command string with json tags (optional)
+	// TODO: add field Arguments json.RawMessage with json tags (optional)
+
 }
 
 // NewHTTPSServer creates a new HTTPS server
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
-		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
-		tlsCert: cfg.TlsCert,
+		addr:         fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		tlsCert:      cfg.TlsCert,
 		tlsKey:       cfg.TlsKey,
 		sharedSecret: cfg.SharedSecret,
 	}
@@ -104,21 +105,23 @@ func RootHandler(secret string) http.HandlerFunc {
 		var response HTTPSResponse
 
 		// FIRST, check if there are pending commands
-		cmd, exists := control.AgentCommands.GetCommand()
+		// TODO: call control.AgentCommands.GetCommand() return cmd + exists
 		if exists {
 			log.Printf("Sending command to agent: %s\n", cmd.Command)
-			response.Job = true
-			response.Command = cmd.Command
-			response.Arguments = cmd.Arguments
+			// TODO: Assign response.Job to true
+			// TODO: Assign response.Command to cmd.Command
+			// TODO: Assign response.Arguments to cmd.Arguments
+
 			response.JobID = fmt.Sprintf("job_%06d", rand.Intn(1000000))
+
 			log.Printf("Job ID: %s\n", response.JobID)
 		} else {
 			log.Printf("No commands in queue")
 		}
 
 		// THEN, check if we should transition
-		shouldChange := control.Manager.CheckAndReset()
-
+		// TODO: call control.Manager.CheckAndReset() and assign return to shouldChange
+		
 		if shouldChange {
 			response.Change = true
 			log.Printf("HTTPS: Sending transition signal (change=true)")

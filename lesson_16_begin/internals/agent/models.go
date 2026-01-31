@@ -1,8 +1,6 @@
 package agent
 
 import (
-	"context"
-	"encoding/json"
 	"fmt"
 
 	"c2framework/internals/config"
@@ -11,7 +9,7 @@ import (
 // Agent defines the contract for agents
 type Agent interface {
 	// Send sends a message and waits for a response
-	Send(ctx context.Context) (json.RawMessage, error)
+	// TODO: Send(ctx context.Context)  now returns a json.RawMessage and error
 }
 
 // NewAgent creates a new agent based on the protocol

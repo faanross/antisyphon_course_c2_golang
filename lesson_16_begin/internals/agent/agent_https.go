@@ -15,7 +15,7 @@ import (
 
 // HTTPSAgent implements the Agent interface for HTTPS
 type HTTPSAgent struct {
-	serverAddr string
+	serverAddr   string
 	client       *http.Client
 	sharedSecret string
 }
@@ -35,7 +35,7 @@ func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTT
 	}
 
 	return &HTTPSAgent{
-		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
+		serverAddr:   fmt.Sprintf("%s:%s", serverIP, serverPort),
 		client:       client,
 		sharedSecret: sharedSecret,
 	}
@@ -93,13 +93,11 @@ func (c *HTTPSAgent) Send(ctx context.Context) (json.RawMessage, error) {
 	}
 
 	// Unmarshal into HTTPSResponse to validate structure
-	var httpsResp server.HTTPSResponse
-	if err := json.Unmarshal(decrypted, &httpsResp); err != nil {
-		return nil, fmt.Errorf("unmarshaling response: %w", err)
-	}
+	// TODO: Instantiate httpsResp of type httpsResp server.HTTPSResponse
+	// TODO unmarshall decrypted into httpsResp
 
 	// Marshal back to json.RawMessage
-	jsonData, err := json.Marshal(httpsResp)
+	// TODO Marshall httpsResp back as jsonData
 	if err != nil {
 		return nil, fmt.Errorf("marshaling response: %w", err)
 	}

@@ -53,8 +53,8 @@ func (cq *CommandQueue) GetCommand() (CommandClient, bool) {
 		return CommandClient{}, false
 	}
 
-	cmd := cq.PendingCommands[0]
-	cq.PendingCommands = cq.PendingCommands[1:]
+	// TODO: assign cmd equal to index 0 in cq.PendingCommands
+	// TODO: use [1:] to remove first element
 
 	log.Printf("DEQUEUED: Command '%s'", cmd.Command)
 

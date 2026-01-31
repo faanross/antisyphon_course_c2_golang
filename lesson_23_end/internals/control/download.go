@@ -12,7 +12,7 @@ func validateDownloadCommand(rawArgs json.RawMessage) error {
 		return fmt.Errorf("download command requires arguments")
 	}
 
-	var args DownloadArgsClient
+	var args DownloadArgs
 
 	if err := json.Unmarshal(rawArgs, &args); err != nil {
 		return fmt.Errorf("invalid argument format: %w", err)
@@ -24,26 +24,4 @@ func validateDownloadCommand(rawArgs json.RawMessage) error {
 
 	log.Printf("Download validation passed: file_path=%s", args.FilePath)
 	return nil
-}
-
-// processDownloadCommand processes download arguments (minimal for this command)
-func processDownloadCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
-	var clientArgs DownloadArgsClient
-
-	if err := json.Unmarshal(rawArgs, &clientArgs); err != nil {
-		return nil, fmt.Errorf("unmarshaling args: %w", err)
-	}
-
-	// For download, we just pass the file path as-is
-	agentArgs := DownloadArgsAgent{
-		FilePath: clientArgs.FilePath,
-	}
-
-	processedJSON, err := json.Marshal(agentArgs)
-	if err != nil {
-		return nil, fmt.Errorf("marshaling processed args: %w", err)
-	}
-
-	log.Printf("Download processed: requesting file %s from agent", clientArgs.FilePath)
-	return processedJSON, nil
 }

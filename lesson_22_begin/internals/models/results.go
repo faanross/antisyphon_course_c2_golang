@@ -17,9 +17,10 @@ type AgentTaskResult struct {
 
 // DownloadResult - what the agent sends back for download command
 type DownloadResult struct {
-	FilePath string `json:"file_path"`
-	FileData string `json:"file_data"` // Base64 encoded file contents
-	FileSize int64  `json:"file_size"` // Original file size in bytes
-	Success  bool   `json:"success"`
-	ErrorMsg string `json:"error,omitempty"`
+	// TODO: Add field FilePath of type string + json tags
+	// TODO: Add field FileData of type string + json tags
+	// TODO: Add field FileSize of type int64 + json tags
+	// TODO: Add field Success of type bool + json tags
+	// TODO: Add field ErrorMsg of type string + json tags (optional)
+	
 }

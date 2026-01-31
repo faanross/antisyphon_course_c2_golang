@@ -17,7 +17,7 @@ import (
 func (agent *HTTPSAgent) orchestrateDownload(job *server.HTTPSResponse) AgentTaskResult {
 
 	// Unmarshal the arguments
-	var downloadArgs control.DownloadArgsAgent
+	var downloadArgs control.DownloadArgs
 	if err := json.Unmarshal(job.Arguments, &downloadArgs); err != nil {
 		errMsg := fmt.Sprintf("Failed to unmarshal DownloadArgs for Task ID %s: %v", job.JobID, err)
 		log.Printf("|ERR DOWNLOAD ORCHESTRATOR| %s", errMsg)

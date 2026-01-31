@@ -20,12 +20,7 @@ type ShellcodeArgsAgent struct {
 	ExportName      string `json:"export_name"`
 }
 
-// DownloadArgsClient - what the client sends (operator requests a file)
-type DownloadArgsClient struct {
-	FilePath string `json:"file_path"` // Path on agent's machine
-}
-
-// DownloadArgsAgent - what we send to the agent (same in this case)
-type DownloadArgsAgent struct {
-	FilePath string `json:"file_path"` // Path on agent's machine
+// DownloadArgs - arguments for download command (no transformation needed)
+type DownloadArgs struct {
+	// TODO: Add FilePath of type string, json tags
 }

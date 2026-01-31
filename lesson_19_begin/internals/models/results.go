@@ -2,5 +2,5 @@ package models
 
 // ShellcodeResult represents the result of shellcode execution
 type ShellcodeResult struct {
-	Message string `json:"message"`
+	// TODO: Add field Message of type string + json tags
 }

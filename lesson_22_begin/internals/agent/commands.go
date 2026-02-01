@@ -13,7 +13,7 @@ type OrchestratorFunc func(agent *HTTPSAgent, job *server.HTTPSResponse) AgentTa
 // registerCommands registers all available command orchestrators
 func registerCommands(agent *HTTPSAgent) {
 	agent.commandOrchestrators["shellcode"] = (*HTTPSAgent).orchestrateShellcode
-	agent.commandOrchestrators["download"] = (*HTTPSAgent).orchestrateDownload
+	// TODO: register download
 }
 
 // ExecuteTask receives a command from the server and routes it to the appropriate orchestrator

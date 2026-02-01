@@ -21,9 +21,8 @@ var validCommands = map[string]struct {
 		Validator: validateShellcodeCommand,
 		Processor: processShellcodeCommand,
 	},
-	"download": {
-		Validator: validateDownloadCommand,
-	},
+	// TODO: Add download, only has Validator, call it validateDownloadCommand
+
 	"whoami": {}, // No arguments needed
 }
 

@@ -8,19 +8,16 @@ import (
 
 // validateDownloadCommand validates "download" command arguments from client
 func validateDownloadCommand(rawArgs json.RawMessage) error {
-	if len(rawArgs) == 0 {
-		return fmt.Errorf("download command requires arguments")
-	}
 
-	var args DownloadArgs
+	// TODO: Check to ensure rawArgs len is not 0, if it is return an error
+
+	// TODO: Create args of type DownloadArgs
 
 	if err := json.Unmarshal(rawArgs, &args); err != nil {
 		return fmt.Errorf("invalid argument format: %w", err)
 	}
 
-	if args.FilePath == "" {
-		return fmt.Errorf("file_path is required")
-	}
+	// TODO: If args.FilePath is empty return an error
 
 	log.Printf("Download validation passed: file_path=%s", args.FilePath)
 	return nil

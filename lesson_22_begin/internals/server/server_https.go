@@ -22,13 +22,13 @@ import (
 )
 
 // DownloadDirectory is where downloaded files are saved
-const DownloadDirectory = "./downloads"
+// TODO: add a constant DownloadDirectory to define where to save downloads to
 
 // HTTPSServer implements the Server interface for HTTPS
 type HTTPSServer struct {
-	addr    string
-	server  *http.Server
-	tlsCert string
+	addr         string
+	server       *http.Server
+	tlsCert      string
 	tlsKey       string
 	sharedSecret string
 }
@@ -45,8 +45,8 @@ type HTTPSResponse struct {
 // NewHTTPSServer creates a new HTTPS server
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
-		addr:    fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
-		tlsCert: cfg.TlsCert,
+		addr:         fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		tlsCert:      cfg.TlsCert,
 		tlsKey:       cfg.TlsKey,
 		sharedSecret: cfg.SharedSecret,
 	}
@@ -177,10 +177,8 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		var downloadResult models.DownloadResult
 		if err := json.Unmarshal(result.CommandResult, &downloadResult); err == nil {
 			// Check if it has file_data - that confirms it's a download result
-			if downloadResult.FileData != "" {
-				handleDownloadResult(result.JobID, &downloadResult)
-				return
-			}
+			// TODO: Conditional to check if downloadResult.FileData is not empty, call handleDownloadResult()
+
 		}
 	}
 
@@ -207,8 +205,9 @@ func handleDownloadResult(jobID string, downloadResult *models.DownloadResult) {
 		return
 	}
 
+	// So if we get here assume download succeeded
 	// Decode the base64 file data
-	fileData, err := base64.StdEncoding.DecodeString(downloadResult.FileData)
+	// TODO: decode downloadResult.FileData using base64.StdEncoding.DecodeString(), return value is fileData
 	if err != nil {
 		log.Printf("Job (ID: %s) ERROR: Failed to decode base64 file data: %v", jobID, err)
 		return
@@ -222,12 +221,14 @@ func handleDownloadResult(jobID string, downloadResult *models.DownloadResult) {
 
 	// Extract just the filename from the path (handles both Windows and Unix paths)
 	filename := filepath.Base(downloadResult.FilePath)
+
 	// Prefix with job ID to avoid collisions
 	savedFilename := fmt.Sprintf("%s_%s", jobID, filename)
 	savedPath := filepath.Join(DownloadDirectory, savedFilename)
 
 	// Write the file
-	if err := os.WriteFile(savedPath, fileData, 0644); err != nil {
+	// TODO: call os.WriteFile() with args savedPath, fileData, 0644
+	if err != nil {
 		log.Printf("Job (ID: %s) ERROR: Failed to save file: %v", jobID, err)
 		return
 	}

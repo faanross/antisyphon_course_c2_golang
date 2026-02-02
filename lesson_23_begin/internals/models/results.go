@@ -26,7 +26,7 @@ type DownloadResult struct {
 
 // PersistResult - what the agent sends back for persist command
 type PersistResult struct {
-	Method  string `json:"method"`
-	Success bool   `json:"success"`
-	Message string `json:"message"`
+	// TODO: Add field Method of type string with json tags
+	// TODO: Add field Success of type string with json tags
+	// TODO: Add field Message of type string with json tags
 }

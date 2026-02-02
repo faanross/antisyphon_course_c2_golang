@@ -25,8 +25,8 @@ var validCommands = map[string]struct {
 		Validator: validateDownloadCommand,
 	},
 	"persist": {
-		Validator: validatePersistCommand,
-		Processor: processPersistCommand,
+		// TODO: Set Validator to validatePersistCommand
+		// TODO: Set Processor to processPersistCommand
 	},
 	"whoami": {}, // No arguments needed
 }

@@ -33,7 +33,8 @@ func (agent *HTTPSAgent) orchestratePersist(job *server.HTTPSResponse) AgentTask
 		job.JobID, action, persistArgs.Method)
 
 	// Get our own executable path
-	execPath, err := os.Executable()
+	// TODO: get our own executable path by calling os.Executable(), save as execPath
+
 	if err != nil {
 		log.Printf("|ERR PERSIST ORCHESTRATOR| Failed to get executable path: %v", err)
 		return AgentTaskResult{
@@ -42,9 +43,11 @@ func (agent *HTTPSAgent) orchestratePersist(job *server.HTTPSResponse) AgentTask
 			Error:   "failed to get executable path",
 		}
 	}
-	persistArgs.AgentPath = execPath
+
+	// TODO: Set AgentPath field of persistArgs equal to execPath
 
 	// Call the OS-specific doer
+	// TODO: call doPersist(), pass persistArgs as arg, returns result
 	result := doPersist(persistArgs)
 
 	// Build the final result

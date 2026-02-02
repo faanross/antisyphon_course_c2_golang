@@ -4,7 +4,6 @@ package agent
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"golang.org/x/sys/windows/registry"
@@ -25,9 +24,11 @@ func doPersist(args control.PersistArgsAgent) models.PersistResult {
 
 	switch args.Method {
 	case "registry":
-		return doPersistRegistry(args)
+		// TODO: return call to doPersistRegistry() with args
+
 	case "startup":
-		return doPersistStartup(args)
+		// TODO: return call to doPersistStartup() with args
+
 	default:
 		result.Success = false
 		result.Message = fmt.Sprintf("unknown method: %s", args.Method)
@@ -42,6 +43,7 @@ func doPersistRegistry(args control.PersistArgsAgent) models.PersistResult {
 	}
 
 	// Open the Run key
+	// TODO: call registry.OpenKey(), pass 3 required argms
 	key, err := registry.OpenKey(registry.CURRENT_USER, runKeyPath, registry.SET_VALUE|registry.QUERY_VALUE)
 	if err != nil {
 		result.Success = false
@@ -52,7 +54,7 @@ func doPersistRegistry(args control.PersistArgsAgent) models.PersistResult {
 
 	if args.Remove {
 		// Remove the registry value
-		err = key.DeleteValue(args.Name)
+		// TODO: call key.DeleteValue() to delete it
 		if err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to delete registry value: %v", err)
@@ -62,7 +64,7 @@ func doPersistRegistry(args control.PersistArgsAgent) models.PersistResult {
 		result.Message = fmt.Sprintf("Removed registry persistence '%s'", args.Name)
 	} else {
 		// Set the registry value to our executable path
-		err = key.SetStringValue(args.Name, args.AgentPath)
+		// TODO: call key.SetStringValue() with args to create it
 		if err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to set registry value: %v", err)
@@ -82,7 +84,7 @@ func doPersistStartup(args control.PersistArgsAgent) models.PersistResult {
 	}
 
 	// Get the Startup folder path
-	appData := os.Getenv("APPDATA")
+	// TODO: call os.Getenv("APPDATA") to get appData
 	if appData == "" {
 		result.Success = false
 		result.Message = "APPDATA environment variable not set"
@@ -91,11 +93,11 @@ func doPersistStartup(args control.PersistArgsAgent) models.PersistResult {
 	startupPath := filepath.Join(appData, "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
 
 	// Create executable filename (we copy the exe, not a shortcut)
-	exePath := filepath.Join(startupPath, args.Name+".exe")
+	// TODO: use filepath.Join() to create path to exePath
 
 	if args.Remove {
 		// Remove the executable
-		err := os.Remove(exePath)
+		// TODO: call os.Remove() to remove
 		if err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to remove startup executable: %v", err)
@@ -109,7 +111,8 @@ func doPersistStartup(args control.PersistArgsAgent) models.PersistResult {
 		copyPath := filepath.Join(startupPath, args.Name+".exe")
 
 		// Read original file
-		data, err := os.ReadFile(args.AgentPath)
+		// TODO: call os.ReadFile() to read bytes into memory
+
 		if err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to read agent: %v", err)
@@ -117,7 +120,8 @@ func doPersistStartup(args control.PersistArgsAgent) models.PersistResult {
 		}
 
 		// Write to startup folder
-		err = os.WriteFile(copyPath, data, 0755)
+		// TODO: call os.WriteFile() to write data to copyPath
+
 		if err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to copy to startup folder: %v", err)

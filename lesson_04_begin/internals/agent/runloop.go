@@ -13,9 +13,8 @@ import (
 
 // CalculateSleepDuration calculates the actual sleep time with jitter
 func CalculateSleepDuration(baseDelay time.Duration, jitterPercent int) time.Duration {
-	if jitterPercent == 0 {
-		return baseDelay
-	}
+
+	// TODO: If jitterPercent is 0, just return baseDelay
 
 	// Calculate jitter range
 	jitterRange := float64(baseDelay) * float64(jitterPercent) / 100.0
@@ -24,7 +23,7 @@ func CalculateSleepDuration(baseDelay time.Duration, jitterPercent int) time.Dur
 	jitter := (rand.Float64()*2 - 1) * jitterRange
 
 	// Calculate final duration
-	finalDuration := float64(baseDelay) + jitter
+	// TODO: finalDuration is baseDelay cast tp float64 + jitter
 
 	// Ensure we don't go negative
 	if finalDuration < 0 {
@@ -41,8 +40,8 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		// Check if context is cancelled
 		select {
 		case <-ctx.Done():
-			log.Println("Run loop cancelled")
-			return nil
+			// TODO: if Done() is called on context, log message AND return
+
 		default:
 		}
 
@@ -50,7 +49,7 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		if err != nil {
 			log.Printf("Error sending request: %v", err)
 			// Don't exit - just sleep and try again
-			time.Sleep(cfg.Timing.Delay)
+			// TODO: time.Sleep equal to cfg.Timing.Delay
 			continue // Skip to next iteration
 		}
 

@@ -38,16 +38,14 @@ func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 // Start implements Server.Start for HTTPS
 func (s *HTTPSServer) Start() error {
 	// Create Chi router
-	r := chi.NewRouter()
+	// TODO: create router r, call NewRouter() from chi library
 
 	// TODO: Define our GET endpoint at /, calls RootHandler
 
 	// Create the HTTP server
-	s.server = &http.Server{
-		// TODO: Addr is assigned s.addr
-		// TODO: Handler is assigned r
-
-	}
+	// TODO instantiate s.server as reference to http.Server
+	// TODO: Addr is assigned s.addr
+	// TODO: Handler is assigned r
 
 	// Start the server
 	// TODO call method ListenAndServeTLS, pass cert and key, return call directly
@@ -76,7 +74,8 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Encode and send the response
-	if err := json.NewEncoder(w).Encode(response); err != nil {
+	// TODO: encode response with json.NewEncoder(w).Encode(response)
+	if err != nil {
 		log.Printf("Error encoding response: %v\n", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return

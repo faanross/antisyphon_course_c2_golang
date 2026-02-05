@@ -25,16 +25,16 @@ func main() {
 	}
 
 	// Start the server in own goroutine
-	go func() {
-		log.Printf("Starting %s server on %s:%s", cfg.Protocol, cfg.ListeningInterface, cfg.ListeningPort)
-		if err := srv.Start(); err != nil {
-			log.Fatalf("Server error: %v", err)
-		}
-	}()
+	// TODO: create a goroutine
+	log.Printf("Starting %s server on %s:%s", cfg.Protocol, cfg.ListeningInterface, cfg.ListeningPort)
+	// TODO: call srv.Start()
+	if err != nil {
+		log.Fatalf("Server error: %v", err)
+	}
 
 	// Wait for interrupt signal
 	// TODO: Assign sigChan using make, channel type is os.Signal, buffer of 1)
-	signal.Notify(sigChan, os.Interrupt)
+	// TODO: call signal.Notify, pass sigChan and os.Interrupt
 	// TODO: Block main goroutine here with sigChan
 
 	// Graceful shutdown

@@ -16,9 +16,8 @@ type Agent interface {
 // NewAgent creates a new agent based on the protocol
 func NewAgent(cfg *config.AgentConfig) (Agent, error) {
 	switch cfg.Protocol {
-	case "https":
-		return nil, fmt.Errorf("HTTPS not yet implemented")
-		// TODO: Add a case for dns, similar to https
+	// TODO: Add a case for https, returns nil and error not yet implemented
+	// TODO: Add a case for dns, similar to https
 	default:
 		return nil, fmt.Errorf("unsupported protocol: %v", cfg.Protocol)
 	}

@@ -19,10 +19,9 @@ type Server interface {
 // NewServer creates a new server based on the protocol
 func NewServer(cfg *config.ServerConfig) (Server, error) {
 	switch cfg.Protocol {
-	// TODO: Add a case for https, similar to dns
+	// TODO: Add a case for https
 	case "dns":
 		return nil, fmt.Errorf("DNS not yet implemented")
-	default:
-		return nil, fmt.Errorf("unsupported protocol: %v", cfg.Protocol)
+		// TODO: Add a default case
 	}
 }

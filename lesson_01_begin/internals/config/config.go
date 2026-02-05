@@ -11,16 +11,17 @@ type AgentConfig struct {
 
 // ServerConfig holds all configuration values for the server
 type ServerConfig struct {
-	ListeningInterface string
-	ListeningPort      string
-	Protocol           string // this will be the starting protocol
-	TlsKey             string
-	TlsCert            string
+	// TODO: Add field ListeningInterface of type string
+	// TODO: Add field ListeningPort of type string
+	// TODO: Add field Protocol of type string
+	// TODO: Add field TlsKey of type string
+	// TODO: Add field TlsCert of type string
+
 }
 
 // TimingConfig holds timing-related configuration
 type TimingConfig struct {
 	// TODO: Add field Delay of type time.Duration
 	// TODO: Add field Jitter of type int
-	
+
 }

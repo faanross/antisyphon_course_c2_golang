@@ -38,5 +38,5 @@ func main() {
 		log.Fatalf("Failed to parse response: %v", err)
 	}
 
-	log.Printf("Received response: change=%v", httpsResp.Change)
+	// TODO use log.Printf to print httpsResp.Change to stdout
 }

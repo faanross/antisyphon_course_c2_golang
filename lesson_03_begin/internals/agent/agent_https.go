@@ -29,8 +29,9 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 	}
 
 	return &HTTPSAgent{
-		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
-		client:     client,
+		// TODO: assign serverAddr serverIP:serverPort using fmt.Sprintf
+		// TODO: Assign client as client (from above)
+		client: client,
 	}
 }
 
@@ -39,7 +40,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	// TODO: Construct url with Sprintf and serverAddr
 
 	// Create GET request
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	// TODO: Call http.NewRequestWithContext() to great request
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
 	}

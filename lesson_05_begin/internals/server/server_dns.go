@@ -19,7 +19,7 @@ type DNSServer struct {
 // NewDNSServer creates a new DNS server
 func NewDNSServer(cfg *config.ServerConfig) *DNSServer {
 	return &DNSServer{
-		addr: fmt.Sprintf("%s:%s", cfg.ListeningInterface, cfg.ListeningPort),
+		// TODO: Assign addr with ListeningInterface and ListeningPort
 	}
 }
 
@@ -33,7 +33,7 @@ func (s *DNSServer) Start() error {
 	}
 
 	// Start server
-	return s.server.ListenAndServe()
+	// TODO return a call to s.server.ListenAndServe()
 }
 
 // Stop implements Server.Stop for DNS
@@ -73,7 +73,7 @@ func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 			},
 			// TODO set A to value returned by net.ParseIP, pass string 42.42.42.42 as argument
 		}
-		m.Answer = append(m.Answer, rr)
+		// TODO: append rr to m.Answer using append()
 	}
 
 	// Send response

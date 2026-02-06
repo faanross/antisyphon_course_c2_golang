@@ -18,7 +18,7 @@ type DNSAgent struct {
 func NewDNSAgent(serverIP string, serverPort string) *DNSAgent {
 	return &DNSAgent{
 		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
-		client:     new(dns.Client),
+		// TODO: Assign client to new(dns.Client)
 	}
 }
 
@@ -28,7 +28,8 @@ func (c *DNSAgent) Send(ctx context.Context) ([]byte, error) {
 	// TODO: create m by calling new(), pass dns.Msg as arg
 
 	// For now, we'll query for a fixed domain
-	domain := "www.thisdoesnotexist.com."
+	// TODO: create domain, can be anything
+
 	// TODO: call SetQuestion() on m, pass the domain and specify A type record
 	log.Printf("Sending DNS query for: %s", domain)
 

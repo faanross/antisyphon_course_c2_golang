@@ -55,18 +55,15 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		}
 
 		// BASED ON PROTOCOL, HANDLE PARSING DIFFERENTLY
-		switch cfg.Protocol {
-		case "https":
+		// TODO: switch on cfg.Protocol
+		// TODO: case https
+		// TODO: create httpsResp of type server.HTTPSResponse
+		// TODO: Unmarshall and error check
+		// TODO: Log response
 
-			// Parse and display response
-			// TODO: create httpsResp of type server.HTTPSResponse
-			// TODO: unmarshall response into pointer to httpsResp
-			// TODO, handle error with log.Fatalf
-			log.Printf("Received response: change=%v", httpsResp.Change)
-		case "dns":
-			// TODO set ipAddr to casting response to string using string()
-			log.Printf("Received response: IP=%v", ipAddr)
-		}
+		// TODO: case dns
+		// TODO: create ipAdd by casting response to string
+		// TODO: Log response
 
 		// Calculate sleep duration with jitter
 		sleepDuration := CalculateSleepDuration(cfg.Timing.Delay, cfg.Timing.Jitter)

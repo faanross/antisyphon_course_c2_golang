@@ -85,7 +85,7 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 			// TODO: create httpsResp of type server.HTTPSResponse
 			// TODO: unmarshall response into httpResp
 
-			if err != nil {
+			;err != nil {
 				log.Printf("Error unmarshaling HTTPS response: %v", err)
 			} else {
 				// TODO add a nested if-else with true being httpsResp.Job

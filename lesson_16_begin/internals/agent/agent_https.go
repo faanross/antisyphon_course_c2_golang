@@ -98,9 +98,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) (json.RawMessage, error) {
 
 	// Marshal back to json.RawMessage
 	// TODO Marshall httpsResp back as jsonData
-	if err != nil {
-		return nil, fmt.Errorf("marshaling response: %w", err)
-	}
+	// TODO: Error-check
 
-	return json.RawMessage(jsonData), nil
+	// TODO: return json.RawMessage(jsonData) and nil
 }

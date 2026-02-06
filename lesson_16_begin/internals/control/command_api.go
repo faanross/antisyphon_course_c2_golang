@@ -32,6 +32,7 @@ type CommandQueue struct {
 
 // AgentCommands is the global command queue
 var AgentCommands = CommandQueue{
+
 	PendingCommands: make([]CommandClient, 0),
 }
 
@@ -46,17 +47,14 @@ func (cq *CommandQueue) addCommand(command CommandClient) {
 
 // GetCommand retrieves and removes the next command from queue
 func (cq *CommandQueue) GetCommand() (CommandClient, bool) {
-	cq.mu.Lock()
-	defer cq.mu.Unlock()
-
-	if len(cq.PendingCommands) == 0 {
-		return CommandClient{}, false
-	}
+	// TODO: lock mutex + defer unlock
+	// TODO: check if cq.PendingCommands is empty
 
 	// TODO: assign cmd equal to index 0 in cq.PendingCommands
 	// TODO: use [1:] to remove first element
 
-	log.Printf("DEQUEUED: Command '%s'", cmd.Command)
+	// TODO: print confirmation command was dequeued
 
-	return cmd, true
+	// TODO: return cmd and true
+
 }

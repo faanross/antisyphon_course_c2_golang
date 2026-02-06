@@ -112,7 +112,7 @@ func RootHandler(secret string) http.HandlerFunc {
 			// TODO: Assign response.Command to cmd.Command
 			// TODO: Assign response.Arguments to cmd.Arguments
 
-			response.JobID = fmt.Sprintf("job_%06d", rand.Intn(1000000))
+			// TODO: create random 6-digit number assign to response.JobID
 
 			log.Printf("Job ID: %s\n", response.JobID)
 		} else {
@@ -121,7 +121,7 @@ func RootHandler(secret string) http.HandlerFunc {
 
 		// THEN, check if we should transition
 		// TODO: call control.Manager.CheckAndReset() and assign return to shouldChange
-		
+
 		if shouldChange {
 			response.Change = true
 			log.Printf("HTTPS: Sending transition signal (change=true)")

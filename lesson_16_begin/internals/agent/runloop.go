@@ -34,6 +34,7 @@ func CalculateSleepDuration(baseDelay time.Duration, jitterPercent int) time.Dur
 	return time.Duration(finalDuration)
 }
 
+// TODO: detectTransition should now receive json.RawMessage
 // detectTransition checks if the response indicates we should switch protocols
 func detectTransition(protocol string, response json.RawMessage) bool {
 	switch protocol {
@@ -46,12 +47,10 @@ func detectTransition(protocol string, response json.RawMessage) bool {
 
 	case "dns":
 		// DNS response is now JSON with "ip" field
-		var dnsResp struct {
-			IP string `json:"ip"`
-		}
-		if err := json.Unmarshal(response, &dnsResp); err != nil {
-			return false
-		}
+		// TODO: create a dnsResp struct with 1 field IP of type string with json tag
+
+		// TODO: unmarshall response into dnsResp
+
 		return dnsResp.IP == "69.69.69.69"
 	}
 
@@ -85,15 +84,12 @@ func RunLoop(ctx context.Context, comm Agent, cfg *config.AgentConfig) error {
 		if currentProtocol == "https" {
 			// TODO: create httpsResp of type server.HTTPSResponse
 			// TODO: unmarshall response into httpResp
-			
+
 			if err != nil {
 				log.Printf("Error unmarshaling HTTPS response: %v", err)
 			} else {
-				if httpsResp.Job {
-					log.Printf("Job received from Server\n-> Command: %s\n-> JobID: %s", httpsResp.Command, httpsResp.JobID)
-				} else {
-					log.Printf("No job from Server")
-				}
+				// TODO add a nested if-else with true being httpsResp.Job
+
 			}
 		}
 

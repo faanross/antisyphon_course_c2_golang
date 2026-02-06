@@ -70,10 +70,8 @@ func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 
 		if shouldTransition {
 			// TODO: if bool is true, set responseIP to 69.69.69.69
-			log.Printf("DNS: Sending transition signal (69.69.69.69)")
 		} else {
 			// TODO: if bool is false, set responseIP to 42.42.42.42
-			log.Printf("DNS: Normal response (42.42.42.42)")
 		}
 
 		// Create the response with the appropriate IP

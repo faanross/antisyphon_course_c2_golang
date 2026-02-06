@@ -11,32 +11,24 @@ import (
 
 // validateShellcodeCommand validates "shellcode" command arguments from client
 func validateShellcodeCommand(rawArgs json.RawMessage) error {
-	if len(rawArgs) == 0 {
-		return fmt.Errorf("shellcode command requires arguments")
-	}
+
+	// TODO: if len of rawArgs is 0, means empty, return with Errorf
 
 	// TODO: create args of type ShellcodeArgsClient
 
-	if err := json.Unmarshal(rawArgs, &args); err != nil {
-		return fmt.Errorf("invalid argument format: %w", err)
-	}
+	// TODO: unmarshall rawArgs into args, error-check
 
 	// TODO: make sure args.FilePath is not empty, if so return fmt.Errorf
 
-	if args.ExportName == "" {
-		return fmt.Errorf("export_name is required")
-	}
+	// TODO: make sure args.ExportName is not empty, if so return fmt.Errorf
 
 	// Check if file exists
 	// TODO: Conditional if see if file exists using both os.Stat and os.IsNotExist
 
-	{
-		return fmt.Errorf("file does not exist: %s", args.FilePath)
-	}
+	// TODO: Log to terminal validation passed with values
 
-	log.Printf("Validation passed: file_path=%s, export_name=%s", args.FilePath, args.ExportName)
+	// TODO: Return nil
 
-	return nil
 }
 
 // processShellcodeCommand reads the DLL file and converts to base64
@@ -44,17 +36,13 @@ func processShellcodeCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 
 	// TODO: Create clientArgs of type ShellcodeArgsClient
 
-	if err := json.Unmarshal(rawArgs, &clientArgs); err != nil {
-		return nil, fmt.Errorf("unmarshaling args: %w", err)
-	}
+	// TODO: unmarshall rawArgs into clientArgs, error-check
 
 	// Read the DLL file
-	// TODO create file by calling os.Open()
+	// TODO: create file by calling os.Open()
+	// TODO: error check call
 
-	if err != nil {
-		return nil, fmt.Errorf("opening file: %w", err)
-	}
-	defer file.Close()
+	// TODO: defer file close
 
 	// TODO create fileBytes by calling os.ReadAll()
 
@@ -64,21 +52,16 @@ func processShellcodeCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 
 	// Convert to base64
 	// TODO create shellcodeB64 by calling base64.StdEncoding.EncodeToString()
-	
+
 	// Create the arguments that will be sent to the agent
-	agentArgs := ShellcodeArgsAgent{
-		ShellcodeBase64: shellcodeB64,
-		ExportName:      clientArgs.ExportName,
-	}
+	// TODO: create agentArgs and assign 2 fields with value from above
 
 	// Marshal arguments ready to be sent to agent
-	processedJSON, err := json.Marshal(agentArgs)
-	if err != nil {
-		return nil, fmt.Errorf("marshaling processed args: %w", err)
-	}
+	// TODO: create processedJSON by marshalling agentArgs
+	// TODO: perform error-check
 
-	log.Printf("Processed file: %s (%d bytes) -> base64 (%d chars)",
-		clientArgs.FilePath, len(fileBytes), len(shellcodeB64))
+	// TODO: Print a confirmation message to terminal
 
-	return processedJSON, nil
+	// TODO: return processedJSON and nil
+
 }

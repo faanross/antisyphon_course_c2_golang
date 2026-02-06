@@ -15,7 +15,6 @@ type ShellcodeArgsClient struct {
 }
 
 // ShellcodeArgsAgent - what we send to the agent
-type ShellcodeArgsAgent struct {
-	ShellcodeBase64 string `json:"shellcode_base64"`
-	ExportName      string `json:"export_name"`
-}
+// TODO: Create ShellcodeArgsAgent
+// TODO: Add field ShellcodeBase64 of type string with json tags
+// TODO: Add field ExportName of type string with json tags

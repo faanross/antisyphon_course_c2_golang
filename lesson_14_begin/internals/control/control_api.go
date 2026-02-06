@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"sync"
 
 	"github.com/go-chi/chi/v5"
@@ -91,40 +90,15 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 
 	// STEP 1: Check if command exists
 	// TODO look if cmdConfig exists as value inside of validCommands map
-	if !exists {
-		var commandInvalid = fmt.Sprintf("ERROR: Unknown command: %s", cmdClient.Command)
-		log.Printf(commandInvalid)
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(commandInvalid)
-		return
-	}
+	// TODO: if it does not exist print to terminal and send to client
 
 	// STEP 2: Validate arguments (if validator exists)
 	// TODO: call cmdConfig.Validator
-	{
-		if err := cmdConfig.Validator(cmdClient.Arguments); err != nil {
-			var commandInvalid = fmt.Sprintf("ERROR: Validation failed for '%s': %v", cmdClient.Command, err)
-			log.Printf(commandInvalid)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(commandInvalid)
-			return
-		}
-	}
+	// TODO: if it does not exist print to terminal and send to client
 
 	// STEP 3: Process arguments (if processor exists)
 	// TODO: call cmdConfig.Processor
-	{
-		processedArgs, err := cmdConfig.Processor(cmdClient.Arguments)
-		if err != nil {
-			var commandInvalid = fmt.Sprintf("ERROR: Processing failed for '%s': %v", cmdClient.Command, err)
-			log.Printf(commandInvalid)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(commandInvalid)
-			return
-		}
-		cmdClient.Arguments = processedArgs
-		log.Printf("Processed command arguments: %s", cmdClient.Command)
-	}
+	// TODO: if it does not exist print to terminal and send to client
 
 	// Confirm on the client side command was received
 	w.WriteHeader(http.StatusOK)

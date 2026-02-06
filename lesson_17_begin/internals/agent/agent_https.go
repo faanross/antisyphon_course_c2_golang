@@ -44,7 +44,7 @@ func NewHTTPSAgent(serverIP string, serverPort string, sharedSecret string) *HTT
 		// TODO: Assign commandOrchestrators field, instantiate map using make()
 	}
 
-	registerCommands(agent) // Register individual commands
+	// TODO: Call registerCommands(), pass agent
 
 	return agent
 }
@@ -117,28 +117,24 @@ func (c *HTTPSAgent) Send(ctx context.Context) (json.RawMessage, error) {
 
 // SendResult performs a POST request to send task results back to server
 func (agent *HTTPSAgent) SendResult(resultData []byte) error {
-	targetURL := fmt.Sprintf("https://%s/results", agent.serverAddr)
+
+	// TODO: create targetURL, send to /results endpoint of server
 
 	log.Printf("|RETURN RESULTS|-> Sending %d bytes of results via POST to %s", len(resultData), targetURL)
 
 	// Create the HTTP POST request
 	// TODO: create our HTTP POST request (req) using http.NewRequest()
-	if err != nil {
-		log.Printf("|ERR SendResult| Failed to create results request: %v", err)
-		return fmt.Errorf("failed to create http results request: %w", err)
-	}
+	// TODO: error check
 
 	// Set the headers
 	req.Header.Set("Content-Type", "application/json")
 
 	// Execute the request
 	// TODO: Send the request using agent.client.Do(), log response
-	if err != nil {
-		log.Printf("|ERR| Results POST request failed: %v", err)
-		return fmt.Errorf("http results post request failed: %w", err)
-	}
-	defer resp.Body.Close() // Close body even if we don't read it, to release resources
+	// TODO: Error-check
+	// TODO: defer closing of response body
 
-	log.Printf("SUCCESSFULLY SENT FINAL RESULTS BACK TO SERVER.")
-	return nil
+	// TODO: log a message saying it was successful
+	// TODO: return nil
+
 }

@@ -125,7 +125,7 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Queue the validated and processed command
-	AgentCommands.addCommand(cmdClient)
+	// TODO call addCommand() method on AgentCommands to queue command
 
 	// Confirm on the client side command was received
 	w.WriteHeader(http.StatusOK)

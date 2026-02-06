@@ -50,7 +50,7 @@ func StartControlAPI() {
 	// Create Chi router
 	// TODO: create chi router r with chi.NewRouter()
 
-	r.Post("/switch", handleSwitch)
+	// TODO: Redefine our switch endpoint using Chi syntax
 	// TODO: create a new endpoint, Post, for /command, call commandHandler
 
 	log.Println("Starting Control API on :8080")
@@ -72,22 +72,17 @@ func handleSwitch(w http.ResponseWriter, r *http.Request) {
 func commandHandler(w http.ResponseWriter, r *http.Request) {
 	// Instantiate custom type to receive command from client
 	// TODO: instantiate cmdClient of type CommandClient
-	var cmdClient CommandClient
 
 	// The first thing we need to do is unmarshal the request body into the custom type
 	// TODO: unmarshall request body into cmdClient
-	if err != nil {
-		log.Printf("ERROR: Failed to decode JSON: %v", err)
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode("error decoding JSON")
-		return
-	}
+	// TODO: Handle error if unmarshall fails
 
 	// Visually confirm we get the command we expected
-	var commandReceived = fmt.Sprintf("Received command: %s", cmdClient.Command)
-	log.Printf(commandReceived)
+	// TODO: create commandReceived using fmt.Sprintf() to display cmdClient.Command
+	// TODO: print commandReceived to terminal
 
 	// Confirm on the client side command was received
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(commandReceived)
+
+	// TODO marshall commandReceived and write to ResponseWriter
 }

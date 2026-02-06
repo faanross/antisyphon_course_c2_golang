@@ -45,12 +45,8 @@ func main() {
 	}
 
 	// Start HTTPS server in goroutine
-	go func() {
-		log.Printf("Starting HTTPS server on %s:%s (TCP)", cfg.ListeningInterface, cfg.ListeningPort)
-		if err := httpsServer.Start(); err != nil {
-			log.Fatalf("HTTPS server error: %v", err)
-		}
-	}()
+	// TODO: Create goroutine
+	// TODO Start() the https server + error check
 
 	// Start DNS server in goroutine
 	// TODO: Start() dnsServer in exactly same way as above, in its own goroutine
@@ -63,11 +59,8 @@ func main() {
 	// Graceful shutdown
 	log.Println("Shutting down both servers...")
 
-	if err := httpsServer.Stop(); err != nil {
-		log.Printf("Error HTTPS stopping server: %v", err)
-	}
+	// TODO: Call Stop() on HTTPS Server + Error-check
 
-	if err := dnsServer.Stop(); err != nil {
-		log.Printf("Error DNS stopping server: %v", err)
-	}
+	// TODO: Call Stop() on HTTPS Server + Error-check
+
 }

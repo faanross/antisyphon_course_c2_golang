@@ -14,9 +14,8 @@ type TransitionManager struct {
 }
 
 // Global instance
-var Manager = &TransitionManager{
-	// TODO: set shouldTransition to false
-}
+// TODO create global flag called Manager
+// TODO: set shouldTransition to false
 
 // TriggerTransition sets the transition flag
 func (tm *TransitionManager) TriggerTransition() {
@@ -32,8 +31,8 @@ func (tm *TransitionManager) TriggerTransition() {
 // CheckAndReset atomically checks if transition is needed and resets the flag
 // This ensures the transition signal is consumed only once
 func (tm *TransitionManager) CheckAndReset() bool {
-	tm.mu.Lock()
-	defer tm.mu.Unlock()
+	// TODO: lock the mutex
+	// TODO: defer mutex unlock
 
 	if tm.shouldTransition {
 		// TODO set tm.shouldTransition to false (reset flag)
@@ -42,7 +41,7 @@ func (tm *TransitionManager) CheckAndReset() bool {
 
 	}
 
-	return false
+	// TODO return false
 }
 
 // StartControlAPI starts the control API server on port 8080
@@ -60,14 +59,12 @@ func StartControlAPI() {
 }
 
 func handleSwitch(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+
+	// TODO: if method is not Post, error and bail
 
 	// TODO: call TriggerTransition() on Manager (global flag)
 
-	response := "Protocol transition triggered"
+	// TODO: create response as suitable message
 
 	json.NewEncoder(w).Encode(response)
 }

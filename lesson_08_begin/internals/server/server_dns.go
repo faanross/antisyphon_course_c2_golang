@@ -66,7 +66,8 @@ func (s *DNSServer) handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 		// Check if we should transition
 		// TODO: create shouldTransition, call our new method CheckAndReset()
 
-		var responseIP string
+		// TODO create responseIP as string
+
 		if shouldTransition {
 			// TODO: if bool is true, set responseIP to 69.69.69.69
 			log.Printf("DNS: Sending transition signal (69.69.69.69)")

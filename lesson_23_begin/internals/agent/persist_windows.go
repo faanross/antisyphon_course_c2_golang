@@ -30,7 +30,6 @@ func doPersist(args control.PersistArgsAgent) models.PersistResult {
 		// Remove the registry value
 		// TODO: remove key using key.DeleteValue()
 		if err != nil {
-			// TODO: set result.Success to false
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to delete registry value: %v", err)
 			return result

@@ -29,8 +29,8 @@ func (agent *HTTPSAgent) orchestratePersist(job *server.HTTPSResponse) AgentTask
 	if persistArgs.Remove {
 		action = "Removing"
 	}
-	log.Printf("|PERSIST ORCHESTRATOR| Task ID: %s. %s persistence via %s",
-		job.JobID, action, persistArgs.Method)
+	log.Printf("|PERSIST ORCHESTRATOR| Task ID: %s. %s persistence",
+		job.JobID, action)
 
 	// Get our own executable path
 	execPath, err := os.Executable()

@@ -18,22 +18,13 @@ func validatePersistCommand(rawArgs json.RawMessage) error {
 		return fmt.Errorf("invalid argument format: %w", err)
 	}
 
-	// Validate method
-	validMethods := map[string]bool{
-		"registry": true,
-		"startup":  true,
-	}
-	if !validMethods[args.Method] {
-		return fmt.Errorf("invalid method '%s' (valid: registry, startup)", args.Method)
-	}
-
 	// Name is required
 	if args.Name == "" {
 		return fmt.Errorf("name is required")
 	}
 
-	log.Printf("Persist validation passed: method=%s, name=%s, remove=%v",
-		args.Method, args.Name, args.Remove)
+	log.Printf("Persist validation passed: name=%s, remove=%v",
+		args.Name, args.Remove)
 	return nil
 }
 
@@ -47,7 +38,6 @@ func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 
 	// Pass through to agent - it knows its own executable path
 	agentArgs := PersistArgsAgent{
-		Method:    clientArgs.Method,
 		Name:      clientArgs.Name,
 		Remove:    clientArgs.Remove,
 		AgentPath: "", // Agent will fill this in
@@ -62,7 +52,7 @@ func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 	if clientArgs.Remove {
 		action = "remove"
 	}
-	log.Printf("Persist processed: %s persistence via %s (name: %s)",
-		action, clientArgs.Method, clientArgs.Name)
+	log.Printf("Persist processed: %s persistence (name: %s)",
+		action, clientArgs.Name)
 	return processedJSON, nil
 }

@@ -215,7 +215,6 @@ func handleDownloadResult(jobID string, downloadResult *models.DownloadResult) {
 
 	// Create downloads directory if it doesn't exist
 	// TODO create DownloadDirectory if it does not exist
-	err := os.MkdirAll(DownloadDirectory, 0755)
 	if err != nil {
 		log.Printf("Job (ID: %s) ERROR: Failed to create downloads directory: %v", jobID, err)
 		return

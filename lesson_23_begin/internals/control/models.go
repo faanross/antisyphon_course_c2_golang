@@ -38,5 +38,4 @@ type PersistArgsAgent struct {
 	Name   string `json:"name"`
 	Remove bool   `json:"remove"`
 	// TODO: add field AgentPath of type string with json tags
-	AgentPath string `json:"agent_path"` // Path where agent executable is located
 }

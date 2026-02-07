@@ -28,7 +28,6 @@ var validCommands = map[string]struct {
 		Validator: validatePersistCommand,
 		Processor: processPersistCommand,
 	},
-	"whoami": {}, // No arguments needed
 }
 
 // CommandQueue stores commands ready for agent pickup

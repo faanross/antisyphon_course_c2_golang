@@ -23,7 +23,6 @@ var validCommands = map[string]struct {
 	},
 	// TODO: Add download, only has Validator, call it validateDownloadCommand
 
-	"whoami": {}, // No arguments needed
 }
 
 // CommandQueue stores commands ready for agent pickup

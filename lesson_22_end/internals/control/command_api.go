@@ -24,7 +24,6 @@ var validCommands = map[string]struct {
 	"download": {
 		Validator: validateDownloadCommand,
 	},
-	"whoami": {}, // No arguments needed
 }
 
 // CommandQueue stores commands ready for agent pickup

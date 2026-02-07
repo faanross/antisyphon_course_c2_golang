@@ -11,7 +11,7 @@ import (
 )
 
 // NonceSize is the size of the GCM nonce
-const NonceSize = 12
+// TODO: Declare NonceSize as 12
 
 // DeriveKey derives a 32-byte AES-256 key from the shared secret
 func DeriveKey(secret string) []byte {
@@ -22,7 +22,8 @@ func DeriveKey(secret string) []byte {
 
 // Encrypt encrypts plaintext using AES-GCM and returns base64-encoded result
 func Encrypt(plaintext []byte, secret string) (string, error) {
-	key := DeriveKey(secret)
+
+	// TODO call DeriveKey, pass secret, return key
 
 	// Create AES cipher
 	// TODO: create block by calling aes.NewCipher(), pass key as argument
@@ -37,7 +38,7 @@ func Encrypt(plaintext []byte, secret string) (string, error) {
 	}
 
 	// Generate random nonce
-	nonce := make([]byte, NonceSize)
+	// TODO generate nonce with make()
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
 		return "", fmt.Errorf("generating nonce: %w", err)
 	}
@@ -54,10 +55,10 @@ func Encrypt(plaintext []byte, secret string) (string, error) {
 
 // Decrypt decrypts base64-encoded ciphertext using AES-GCM
 func Decrypt(encoded string, secret string) ([]byte, error) {
-	key := DeriveKey(secret)
+	// TODO call DeriveKey, pass secret, return key
 
 	// Base64 decode
-	data, err := base64.StdEncoding.DecodeString(encoded)
+	// TODO: decode encoded string, save as data
 	if err != nil {
 		return nil, fmt.Errorf("base64 decode: %w", err)
 	}
@@ -72,20 +73,19 @@ func Decrypt(encoded string, secret string) ([]byte, error) {
 	// TODO: assign ciphertext to data[NonceSize:]
 
 	// Create AES cipher
-	block, err := aes.NewCipher(key)
+	// TODO: Call aes.NewCipher to create cipher
 	if err != nil {
 		return nil, fmt.Errorf("creating cipher: %w", err)
 	}
 
 	// Create GCM mode
-	gcm, err := cipher.NewGCM(block)
+	// Todo call NewGCM() on cipher
 	if err != nil {
 		return nil, fmt.Errorf("creating GCM: %w", err)
 	}
 
 	// Decrypt and verify tag
 	// TODO: call gcm.Open(), assign return value to plaintext
-	
 	if err != nil {
 		return nil, fmt.Errorf("decryption failed: %w", err)
 	}

@@ -24,10 +24,8 @@ var validCommands = map[string]struct {
 	"download": {
 		Validator: validateDownloadCommand,
 	},
-	"persist": {
-		Validator: validatePersistCommand,
-		Processor: processPersistCommand,
-	},
+	// TODO: Add "persist" and its Validator and Processor
+
 }
 
 // CommandQueue stores commands ready for agent pickup

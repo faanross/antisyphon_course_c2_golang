@@ -14,7 +14,8 @@ import (
 func (agent *HTTPSAgent) orchestratePersist(job *server.HTTPSResponse) AgentTaskResult {
 
 	// Unmarshal arguments
-	var persistArgs control.PersistArgsAgent
+	// TODO: create persistArgs of type control.PersistArgsAgent
+
 	if err := json.Unmarshal(job.Arguments, &persistArgs); err != nil {
 		errMsg := fmt.Sprintf("Failed to unmarshal PersistArgs for Task ID %s: %v", job.JobID, err)
 		log.Printf("|ERR PERSIST ORCHESTRATOR| %s", errMsg)
@@ -29,11 +30,12 @@ func (agent *HTTPSAgent) orchestratePersist(job *server.HTTPSResponse) AgentTask
 	if persistArgs.Remove {
 		action = "Removing"
 	}
+
 	log.Printf("|PERSIST ORCHESTRATOR| Task ID: %s. %s persistence",
 		job.JobID, action)
 
 	// Get our own executable path
-	execPath, err := os.Executable()
+	// TODO: use os.Executable() to get our own path
 	if err != nil {
 		log.Printf("|ERR PERSIST ORCHESTRATOR| Failed to get executable path: %v", err)
 		return AgentTaskResult{
@@ -42,10 +44,11 @@ func (agent *HTTPSAgent) orchestratePersist(job *server.HTTPSResponse) AgentTask
 			Error:   "failed to get executable path",
 		}
 	}
-	persistArgs.AgentPath = execPath
+
+	// TODO: set persistArgs.AgentPath equal to execPath
 
 	// Call the OS-specific doer
-	result := doPersist(persistArgs)
+	// TODO call doPersist(), assign return to result
 
 	// Build the final result
 	finalResult := AgentTaskResult{

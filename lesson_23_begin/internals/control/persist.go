@@ -12,16 +12,14 @@ func validatePersistCommand(rawArgs json.RawMessage) error {
 		return fmt.Errorf("persist command requires arguments")
 	}
 
-	var args PersistArgsClient
+	// TODO: create args of type PersistArgsClient
 
 	if err := json.Unmarshal(rawArgs, &args); err != nil {
 		return fmt.Errorf("invalid argument format: %w", err)
 	}
 
 	// Name is required
-	if args.Name == "" {
-		return fmt.Errorf("name is required")
-	}
+	// TODO: Make sure Name is provided
 
 	log.Printf("Persist validation passed: name=%s, remove=%v",
 		args.Name, args.Remove)
@@ -30,7 +28,8 @@ func validatePersistCommand(rawArgs json.RawMessage) error {
 
 // processPersistCommand processes persistence arguments
 func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
-	var clientArgs PersistArgsClient
+
+	// TODO: create clientArgs of type PersistArgsClient
 
 	if err := json.Unmarshal(rawArgs, &clientArgs); err != nil {
 		return nil, fmt.Errorf("unmarshaling args: %w", err)
@@ -38,9 +37,10 @@ func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 
 	// Pass through to agent - it knows its own executable path
 	agentArgs := PersistArgsAgent{
-		Name:      clientArgs.Name,
-		Remove:    clientArgs.Remove,
-		AgentPath: "", // Agent will fill this in
+		// TODO: add Name as clientArgs.Name
+		// TODO: same for Remove
+		// TODO: AgentPath is a blank string for now
+
 	}
 
 	processedJSON, err := json.Marshal(agentArgs)
@@ -48,10 +48,9 @@ func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 		return nil, fmt.Errorf("marshaling processed args: %w", err)
 	}
 
-	action := "install"
-	if clientArgs.Remove {
-		action = "remove"
-	}
+	// TODO: set action to install
+	// TODO if clientArgs.Remove, then invert it to remove
+
 	log.Printf("Persist processed: %s persistence (name: %s)",
 		action, clientArgs.Name)
 	return processedJSON, nil

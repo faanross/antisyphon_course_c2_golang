@@ -27,13 +27,13 @@ type DownloadArgs struct {
 
 // PersistArgsClient - what the client sends
 type PersistArgsClient struct {
-	Name   string `json:"name"`   // Name for the persistence entry
-	Remove bool   `json:"remove"` // true to remove persistence, false to install
+	// TODO: Add Name of type string + json tags
+	// TODO: Add Remove of type bool + json tags
 }
 
 // PersistArgsAgent - what we send to the agent
 type PersistArgsAgent struct {
-	Name      string `json:"name"`
-	Remove    bool   `json:"remove"`
-	AgentPath string `json:"agent_path"` // Path where agent executable is located
+	// TODO: Add Name of type string + json tags
+	// TODO: Add Remove of type bool + json tags
+	// TODO: Add AgentPath of type string + json tags
 }

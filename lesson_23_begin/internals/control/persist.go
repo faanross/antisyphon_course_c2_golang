@@ -18,20 +18,13 @@ func validatePersistCommand(rawArgs json.RawMessage) error {
 		return fmt.Errorf("invalid argument format: %w", err)
 	}
 
-	// Validate method
-	// TODO: create registry called validMethods with string:bool pairs
-	// TODO: add field registry, set to true
-	// TODO: add field startup, set to true
-
-	if !validMethods[args.Method] {
-		return fmt.Errorf("invalid method '%s' (valid: registry, startup)", args.Method)
+	// Name is required
+	if args.Name == "" {
+		return fmt.Errorf("name is required")
 	}
 
-	// Name is required
-	// TODO: Conditional check if args.Name was provided, if not return error
-
-	log.Printf("Persist validation passed: method=%s, name=%s, remove=%v",
-		args.Method, args.Name, args.Remove)
+	log.Printf("Persist validation passed: name=%s, remove=%v",
+		args.Name, args.Remove)
 	return nil
 }
 
@@ -45,9 +38,8 @@ func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 
 	// Pass through to agent - it knows its own executable path
 	agentArgs := PersistArgsAgent{
-		// TODO: Set Method equal to field in clientArgs
-		// TODO: Set Name equal to field in clientArgs
-		// TODO: Set Remove equal to field in clientArgs
+		Name:      clientArgs.Name,
+		Remove:    clientArgs.Remove,
 		AgentPath: "", // Agent will fill this in
 	}
 
@@ -57,10 +49,10 @@ func processPersistCommand(rawArgs json.RawMessage) (json.RawMessage, error) {
 	}
 
 	action := "install"
-
-	// TODO: if clientArgs.Remove, then change action to remove
-
-	log.Printf("Persist processed: %s persistence via %s (name: %s)",
-		action, clientArgs.Method, clientArgs.Name)
+	if clientArgs.Remove {
+		action = "remove"
+	}
+	log.Printf("Persist processed: %s persistence (name: %s)",
+		action, clientArgs.Name)
 	return processedJSON, nil
 }

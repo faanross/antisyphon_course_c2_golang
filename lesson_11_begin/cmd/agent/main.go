@@ -14,10 +14,10 @@ import (
 func main() {
 	// Create agent config directly in code
 	cfg := &config.AgentConfig{
-		Protocol:     "https",
-		ServerIP:     "127.0.0.1",
-		ServerPort:   "8443",
-		SharedSecret: "your-super-secret-key-change-in-production",
+		Protocol:   "https",
+		ServerIP:   "127.0.0.1",
+		ServerPort: "8443",
+		// TODO: Assign SharedSecret
 		Timing: config.TimingConfig{
 			Delay:  5 * time.Second,
 			Jitter: 50,

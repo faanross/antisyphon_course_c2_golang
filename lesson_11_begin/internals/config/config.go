@@ -4,11 +4,11 @@ import "time"
 
 // AgentConfig holds all configuration values for the agent
 type AgentConfig struct {
-	ServerIP     string
-	ServerPort   string
-	Timing       TimingConfig
-	Protocol     string // this will be the starting protocol
-	SharedSecret string // HMAC authentication key
+	ServerIP   string
+	ServerPort string
+	Timing     TimingConfig
+	Protocol   string // this will be the starting protocol
+	// TODO: Add SharedSecret as a string
 }
 
 // ServerConfig holds all configuration values for the server
@@ -18,7 +18,7 @@ type ServerConfig struct {
 	Protocol           string // this will be the starting protocol
 	TlsKey             string
 	TlsCert            string
-	SharedSecret       string // HMAC authentication key
+	// TODO: Add SharedSecret as a string
 }
 
 // TimingConfig holds timing-related configuration

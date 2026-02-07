@@ -12,67 +12,56 @@ import (
 	"time"
 )
 
-const (
-	// TimestampTolerance is how far off the timestamp can be (in seconds)
-	TimestampTolerance = 300 // 5 minutes
-)
+// TimestampTolerance is how far off the timestamp can be (in seconds)
+// TODO: define constant TimestampTolerance as 5 mins
 
 // VerifyRequest checks HMAC signature and timestamp validity
 func VerifyRequest(r *http.Request, secret string) error {
 	// Extract headers
 
-	timestamp := r.Header.Get("X-Auth-Timestamp")
+	// TODO: extract timestamp from X-Auth-Timestamp header
 	// TODO extract signature from X-Auth-Signature header
 
-	// TODO if either timestap or signature is blank - return error
+	// TODO if either timestamp or signature is blank - return error
 
 	// Verify timestamp is within tolerance
-	if err := verifyTimestamp(timestamp); err != nil {
-		return err
-	}
+	// TODO: call verifyTimestamp()
 
 	// Read the body
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		return fmt.Errorf("reading body: %w", err)
-	}
-
-	// Restore the body for downstream handlers
-	// TODO: Set r.Body to return of io.NopCloser() pass bytes.NewBuffer(body) as argument
+	// TODO read r.Body
 
 	// Recompute the signature
 	// TODO set message equal to timestamp + string(body)
-	expectedSignature := serverComputeHMAC(message, secret)
+	// TODO: call computeHMAC(), returns expectedSignature
 
 	// Constant-time comparison to prevent timing attacks
-	if !hmac.Equal([]byte(signature), []byte(expectedSignature)) {
-		return fmt.Errorf("invalid signature")
-	}
+	// TODO: Perform constant-time comparison between signature and expectedSignature
 
 	return nil
 }
 
 // verifyTimestamp checks if timestamp is within acceptable range
 func verifyTimestamp(timestampStr string) error {
-	timestamp, err := strconv.ParseInt(timestampStr, 10, 64)
+
+	// TODO: calculate timestamp using strconv.ParseInt()
 	if err != nil {
 		return fmt.Errorf("invalid timestamp format")
 	}
 
-	now := time.Now().Unix()
-	diff := now - timestamp
+	// TODO: set now equal to current Unix time
+	// TODO: Calculate different as now - timestamp
 
 	// Check if timestamp is too old or too far in the future
-	if diff < -TimestampTolerance || diff > TimestampTolerance {
-		return fmt.Errorf("timestamp outside acceptable range")
-	}
+	// Use TimestampTolerance to ensure diff within acceptable range
 
 	return nil
 }
 
 // serverComputeHMAC calculates HMAC-SHA256 (same as agent)
 func serverComputeHMAC(message, secret string) string {
-	mac := hmac.New(sha256.New, []byte(secret))
-	mac.Write([]byte(message))
-	return hex.EncodeToString(mac.Sum(nil))
+
+	// TODO: calculate mac using hmac.New()
+	// TODO: call max.Write(), pass message cast to byte slice
+	// TODO: return mac.Sum(nil) encoded to hex
+
 }

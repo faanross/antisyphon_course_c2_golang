@@ -1,7 +1,6 @@
 package server
 
 import (
-	"log"
 	"net/http"
 )
 
@@ -9,13 +8,11 @@ import (
 func AuthMiddleware(secret string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if err := VerifyRequest(r, secret); err != nil {
-				log.Printf("Authentication failed: %v", err)
-				http.Error(w, "Unauthorized", http.StatusUnauthorized)
-				return
-			}
+			// TODO: Call VerifyRequest()
+			// TODO: if failed: log that request was unauthorized
 
-			next.ServeHTTP(w, r)
+			// TODO: call next.ServeHTTP(w, r)
+			
 		})
 	}
 }

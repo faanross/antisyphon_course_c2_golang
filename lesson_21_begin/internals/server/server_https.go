@@ -15,7 +15,6 @@ import (
 	"c2framework/internals/config"
 	"c2framework/internals/control"
 	"c2framework/internals/crypto"
-	"c2framework/internals/models"
 )
 
 // HTTPSServer implements the Server interface for HTTPS
@@ -159,26 +158,14 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: create result of type models.AgentTaskResult
 
 	// Decode the incoming result
-	if err := json.NewDecoder(r.Body).Decode(&result); err != nil {
-		log.Printf("ERROR: Failed to decode JSON: %v", err)
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode("error decoding JSON")
-		return
-	}
+	// TODO: Unmarshall incoming result + error check
 
 	// TODO: create messageStr of type string
 
-	if len(result.CommandResult) > 0 {
-		// Unmarshal the CommandResult to get the actual message string
-		if err := json.Unmarshal(result.CommandResult, &messageStr); err != nil {
-			log.Printf("ERROR: Failed to unmarshal CommandResult: %v", err)
-			messageStr = string(result.CommandResult) // Fallback to raw bytes as string
-		}
-	}
+	// TODO: implement if - check if result.CommandResult > 0
+	// TODO: inside of if, unmarshall result.CommandResult into messageStr
+	// TODO: if unmarshall fails fall back to raw bytes as string
 
-	if !result.Success {
-		log.Printf("Job (ID: %s) has failed\nMessage: %s\nError: %v", result.JobID, messageStr, result.Error)
-	} else {
-		log.Printf("Job (ID: %s) has succeeded\nMessage: %s", result.JobID, messageStr)
-	}
+	// TODO: simple if-else to display either success of failure
+
 }

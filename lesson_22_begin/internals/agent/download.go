@@ -17,29 +17,15 @@ import (
 func (agent *HTTPSAgent) orchestrateDownload(job *server.HTTPSResponse) AgentTaskResult {
 
 	// Unmarshal the arguments
-	var downloadArgs control.DownloadArgs
-	if err := json.Unmarshal(job.Arguments, &downloadArgs); err != nil {
-		errMsg := fmt.Sprintf("Failed to unmarshal DownloadArgs for Task ID %s: %v", job.JobID, err)
-		log.Printf("|ERR DOWNLOAD ORCHESTRATOR| %s", errMsg)
-		return AgentTaskResult{
-			JobID:   job.JobID,
-			Success: false,
-			Error:   "failed to unmarshal DownloadArgs",
-		}
-	}
+	// TODO: create downloadArgs of type control.DownloadArgs
+	// TODO: Unmarshall and send back error if failed
 
 	log.Printf("|DOWNLOAD ORCHESTRATOR| Task ID: %s. Downloading file: %s",
 		job.JobID, downloadArgs.FilePath)
 
 	// Agent-side validation
-	if downloadArgs.FilePath == "" {
-		log.Printf("|ERR DOWNLOAD ORCHESTRATOR| Task ID %s: FilePath is empty.", job.JobID)
-		return AgentTaskResult{
-			JobID:   job.JobID,
-			Success: false,
-			Error:   "FilePath cannot be empty",
-		}
-	}
+	// TODO: ensure FilePath is not empty
+	// TODO: if it is - send back error
 
 	// Call the doer
 	// TODO: call the doer doDownload(), downloadArgs.FilePath as arg, return value called result
@@ -75,17 +61,13 @@ func doDownload(filePath string) models.DownloadResult {
 	// NOTE - we use os library, handles cross-platform HENCE NO NEED FOR INTERFACE!
 	// Check if file exists
 	// TODO: call os.Stat with filePath as arg, return value as fileInfo
-	if err != nil {
-		result.Success = false
-		result.ErrorMsg = fmt.Sprintf("file not found: %v", err)
-		return result
-	}
+	// TODO: return error if not
 
 	// Check if it's a regular file (not directory)
 	// TODO: Call IsDir() on fileInfo, return error if it is
 
 	// Capture fileSize (for validation back on server side)
-	result.FileSize = fileInfo.Size()
+	// TODO: use fileInfo.Size() to save file size to result
 
 	// Read the file
 	// TODO: call os.Open() to open the file, return as file
@@ -94,7 +76,7 @@ func doDownload(filePath string) models.DownloadResult {
 		result.ErrorMsg = fmt.Sprintf("failed to open file: %v", err)
 		return result
 	}
-	defer file.Close()
+	// TODO: Close deferring file
 
 	// TODO: call io.ReadAll() to load the actual file bytes into memory
 	if err != nil {
@@ -105,7 +87,7 @@ func doDownload(filePath string) models.DownloadResult {
 
 	// Encode to base64 for safe JSON transmission
 	// TODO: Call base64.StdEncoding.EncodeToString() to encode fileBytes into b64
-	result.Success = true
+	// TODO: Set result.Success to true
 
 	log.Printf("|DOWNLOAD DOER| Read %d bytes from %s", len(fileBytes), filePath)
 	return result

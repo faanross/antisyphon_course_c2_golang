@@ -214,17 +214,19 @@ func handleDownloadResult(jobID string, downloadResult *models.DownloadResult) {
 	}
 
 	// Create downloads directory if it doesn't exist
-	if err := os.MkdirAll(DownloadDirectory, 0755); err != nil {
+	// TODO create DownloadDirectory if it does not exist
+	err := os.MkdirAll(DownloadDirectory, 0755)
+	if err != nil {
 		log.Printf("Job (ID: %s) ERROR: Failed to create downloads directory: %v", jobID, err)
 		return
 	}
 
 	// Extract just the filename from the path (handles both Windows and Unix paths)
-	filename := filepath.Base(downloadResult.FilePath)
+	// TODO: use filepath.Base() to extract filename from full path
 
 	// Prefix with job ID to avoid collisions
-	savedFilename := fmt.Sprintf("%s_%s", jobID, filename)
-	savedPath := filepath.Join(DownloadDirectory, savedFilename)
+	// TODO: create savedFilename, prepend jobID to filename
+	// TODO: user filepath.Join() to create full path to save to
 
 	// Write the file
 	// TODO: call os.WriteFile() with args savedPath, fileData, 0644

@@ -67,8 +67,8 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	req.Header.Set("Content-Type", "application/octet-stream")
 
 	// Sign the request (from previous lesson)
-	// TODO: call SignRequest, arguments req, []byte(encryptedBody) and c.sharedSecret
-
+	SignRequest(req, []byte(encryptedBody), c.sharedSecret)
+	
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("sending request: %w", err)

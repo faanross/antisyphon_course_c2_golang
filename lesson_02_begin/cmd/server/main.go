@@ -1,12 +1,8 @@
 package main
 
 import (
-	"log"
-	"os"
-	"os/signal"
-
 	"c2framework/internals/config"
-	"c2framework/internals/server"
+	"log"
 )
 
 func main() {
@@ -15,22 +11,19 @@ func main() {
 		// TODO: Assign protocol https
 		// TODO: Assign ListeningInterface as 0.0.0.0
 		// TODO: Assign ListeningPort as 8443
-		TlsCert: "./certs/server.crt",
-		TlsKey:  "./certs/server.key",
+		// TODO: Assign TlsCert path
+		// TODO: Assign TlsKey path
 	}
 
 	// TODO: Create server using interface's factory function
-	if err != nil {
-		log.Fatalf("Failed to create server: %v", err)
-	}
+	// TODO: Error-check
 
 	// Start the server in own goroutine
 	// TODO: create a goroutine
 	log.Printf("Starting %s server on %s:%s", cfg.Protocol, cfg.ListeningInterface, cfg.ListeningPort)
+
 	// TODO: call srv.Start()
-	if err != nil {
-		log.Fatalf("Server error: %v", err)
-	}
+	// TODO: Error-check
 
 	// Wait for interrupt signal
 	// TODO: Assign sigChan using make, channel type is os.Signal, buffer of 1)
@@ -39,7 +32,7 @@ func main() {
 
 	// Graceful shutdown
 	log.Println("Shutting down server...")
-	if err := srv.Stop(); err != nil {
-		log.Printf("Error stopping server: %v", err)
-	}
+
+	//TODO: call srv.Stop(), and error check
+
 }

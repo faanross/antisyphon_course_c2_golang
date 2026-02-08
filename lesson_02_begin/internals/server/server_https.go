@@ -30,8 +30,9 @@ type HTTPSResponse struct {
 func NewHTTPSServer(cfg *config.ServerConfig) *HTTPSServer {
 	return &HTTPSServer{
 		// TODO assign addr by using Sprintf and combining ListeningInterface and ListeningPort
-		tlsCert: cfg.TlsCert,
-		tlsKey:  cfg.TlsKey,
+		// TODO: Assign tlsCert as cfg.TlsCert
+		// TODO: Assign tlsKey as cfg.TlsKey
+
 	}
 }
 

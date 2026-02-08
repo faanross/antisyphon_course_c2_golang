@@ -67,9 +67,8 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Endpoint %s has been hit by agent\n", r.URL.Path)
 
 	// Create response with change set to false
-	response := HTTPSResponse{
-		// TODO: Assign default to Change as false
-	}
+	// TODO: create response as type HTTPSResponse
+	// TODO: Assign default to Change as false
 
 	// Set content type to JSON
 	w.Header().Set("Content-Type", "application/json")

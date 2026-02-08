@@ -31,7 +31,6 @@ func NewHTTPSAgent(serverIP string, serverPort string) *HTTPSAgent {
 	return &HTTPSAgent{
 		// TODO: assign serverAddr serverIP:serverPort using fmt.Sprintf
 		// TODO: Assign client as client (from above)
-		client: client,
 	}
 }
 

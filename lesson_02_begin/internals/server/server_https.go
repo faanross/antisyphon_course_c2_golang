@@ -17,8 +17,8 @@ import (
 type HTTPSServer struct {
 	// TODO: create field addr of type string
 	// TODO: create server of type *http.Server
-	tlsCert string
-	tlsKey  string
+	// TODO: add tlsCert of type string
+	// TODO: add tlsKey of type string
 }
 
 // HTTPSResponse represents the JSON response for HTTPS

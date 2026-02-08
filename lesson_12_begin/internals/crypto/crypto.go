@@ -16,7 +16,7 @@ import (
 // DeriveKey derives a 32-byte AES-256 key from the shared secret
 func DeriveKey(secret string) []byte {
 	// TODO: Create hash by calling sha256.Sum256(), pass []byte(secret) as argument
-	// return hash[:]
+	// TODO: return hash[:]
 
 }
 

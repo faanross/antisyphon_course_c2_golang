@@ -57,9 +57,9 @@ func (s *HTTPSServer) Stop() error {
 	// TODO: If there's no server, nothing to stop, return nil
 
 	// TODO: Create context to give the server 5 seconds to shut down gracefully
-	defer cancel()
+	// TODO: defer cancel()
 
-	return s.server.Shutdown(ctx)
+	// TODO: return s.server.Shutdown(ctx)
 }
 
 // RootHandler handles requests to the root endpoint

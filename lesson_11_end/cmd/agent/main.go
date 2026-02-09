@@ -17,7 +17,7 @@ func main() {
 		Protocol:     "https",
 		ServerIP:     "127.0.0.1",
 		ServerPort:   "8443",
-		SharedSecret: "your-super-secret-key-change-in-production2",
+		SharedSecret: "your-super-secret-key-change-in-production",
 		Timing: config.TimingConfig{
 			Delay:  5 * time.Second,
 			Jitter: 50,

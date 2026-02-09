@@ -38,9 +38,8 @@ func (s *DNSServer) Start() error {
 
 // Stop implements Server.Stop for DNS
 func (s *DNSServer) Stop() error {
-	if s.server == nil {
-		return nil
-	}
+	// TODO: if there is no server, return nil
+
 	log.Println("Stopping DNS server...")
 
 	// TODO: return method call - s.server.ShutDown()

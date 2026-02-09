@@ -52,7 +52,7 @@ func verifyTimestamp(timestampStr string) error {
 	// TODO: Calculate different as now - timestamp
 
 	// Check if timestamp is too old or too far in the future
-	// Use TimestampTolerance to ensure diff within acceptable range
+	// TODO: Use TimestampTolerance to ensure diff within acceptable range
 
 	return nil
 }

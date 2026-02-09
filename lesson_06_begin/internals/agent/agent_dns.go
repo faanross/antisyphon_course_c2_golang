@@ -17,7 +17,7 @@ type DNSAgent struct {
 // NewDNSAgent creates a new DNS client
 func NewDNSAgent(serverIP string, serverPort string) *DNSAgent {
 	return &DNSAgent{
-		serverAddr: fmt.Sprintf("%s:%s", serverIP, serverPort),
+		// TODO: create serverAddr using Sprintf
 		// TODO: Assign client to new(dns.Client)
 	}
 }

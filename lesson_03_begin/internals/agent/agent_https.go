@@ -52,10 +52,7 @@ func (c *HTTPSAgent) Send(ctx context.Context) ([]byte, error) {
 	defer resp.Body.Close()
 
 	// Check status code
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("server returned status %d: %s", resp.StatusCode, body)
-	}
+	// TODO if StatusCode it no OK, read resp.Body and return error
 
 	// Read response body
 	// TODO: read the response body using io.ReadAll()

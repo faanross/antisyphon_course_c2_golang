@@ -34,9 +34,7 @@ func main() {
 
 	// Parse and display response
 	// TODO: instantiate httpsResp of type server.HTTPSResponse to unmarshall into
-	if err := json.Unmarshal(response, &httpsResp); err != nil {
-		log.Fatalf("Failed to parse response: %v", err)
-	}
+	// TODO: unmarshall into struct + error-check
 
 	// TODO use log.Printf to print httpsResp.Change to stdout
 }

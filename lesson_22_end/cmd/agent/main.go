@@ -15,7 +15,7 @@ func main() {
 	// Create agent config directly in code
 	cfg := &config.AgentConfig{
 		Protocol:     "https",
-		ServerIP:     "192.168.2.",
+		ServerIP:     "192.168.2.11",
 		ServerPort:   "8443",
 		SharedSecret: "your-super-secret-key-change-in-production",
 		Timing: config.TimingConfig{
